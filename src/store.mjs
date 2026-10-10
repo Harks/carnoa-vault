@@ -53,7 +53,13 @@ export async function writeVaultFile(filename, envelope, { createOnly = false } 
   try { await handle.writeFile(content, 'utf8'); await handle.sync(); }
   finally { await handle.close(); }
   try {
-    await fs.rename(temp, filename);
+    // Atomic create-if-absent: rename would overwrite a file created after lstat.
+    if (createOnly) {
+      await fs.link(temp, filename);
+      await fs.unlink(temp);
+    } else {
+      await fs.rename(temp, filename);
+    }
     const parent = await fs.open(directory, constants.O_RDONLY);
     try { await parent.sync(); } finally { await parent.close(); }
   } catch (e) { await fs.rm(temp, { force: true }).catch(() => {}); throw e; }

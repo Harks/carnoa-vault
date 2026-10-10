@@ -5,8 +5,10 @@
 - [x] Hidden interactive TTY input, no secret-reveal CLI.
 - [x] File permission/symlink tests, wrong passphrase/tag tests and default-deny policy tests.
 - [ ] Independent cryptographic and source security review.
-- [ ] Recovery/restore and password-quality UX.
+- [x] Experimental encrypted snapshot restore into absent Vault with corruption/overwrite tests.
+- [ ] Independently reviewed recovery/restore, cross-platform disaster recovery and password-quality UX.
 - [ ] Cross-platform hardware-backed keys, release signing/provenance.
+- [ ] Validated CodeQL/dependency review, secret scanning, SBOM, signed/provenance-based releases.
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 ## Agent broker release (NOT IMPLEMENTED)
