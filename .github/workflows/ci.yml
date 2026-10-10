@@ -46,7 +46,10 @@ jobs:
       - uses: github/codeql-action/analyze@3e6af16ff035267728e2ebc35df5d4c4cf249f81 # v3.30.3
 
   dependency-review:
-    if: github.event_name == 'pull_request'
+    # This GitHub org/repo currently reports "Dependency review is not supported".
+    # Enable repo dependency graph & explicitly set repository variable to true
+    # after confirming the Dependency Review API works. Never claim this was run.
+    if: github.event_name == 'pull_request' && vars.CARNOA_DEPENDENCY_REVIEW_SUPPORTED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

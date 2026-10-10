@@ -14,7 +14,7 @@ Process: feature -> develop PR -> verified develop -> main PR. Tests and doc upd
 | B-001 | P0 | Real verified broker identities/grants | Forgery/expiry/replay/revocation negative tests | Not started |
 | B-002 | P0 | Read-only Github provider adapter | Exact GET allowlist, no redirects/SSRF/token return | Blocked: B-001 |
 | B-003 | P0 | Human consent and audit | Verified approval outside AI, redaction and integrity | Blocked: B-001 |
-| O-001 | P0 | CI supply-chain hardening | Pin actions, CodeQL, secret scan, dependency review, provenance | Partially implemented: pinned Actions, Node matrix, CodeQL, dependency review; signatures, SBOM and scanner validation pending |
+| O-001 | P0 | CI supply-chain hardening | Pin actions, CodeQL, secret scan, dependency review, provenance | Partially implemented: pinned Actions, Node matrix, CodeQL, dependency review; signatures, SBOM and dependency-review repo capability pending; secret scanning & push protection enabled |
 | G-001 | P1 | Discovery interviews | 15 developer and 5 IT/security interviews | Not started |
 
 Immediate next autonomous PR: complete O-001 by validating CI security scanners, add SBOM + release signing / provenance and secret-scan settings, then V-004 passphrase/recovery design with human-centered disaster recovery tests. No real credentials until B-001 identity proofs and independent crypto review gates pass.
