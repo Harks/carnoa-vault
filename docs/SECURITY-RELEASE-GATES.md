@@ -1,0 +1,25 @@
+# Evidence-based release gates
+
+## Experimental (current)
+- [x] Local encrypted vault + strict metadata validation.
+- [x] Hidden interactive TTY input, no secret-reveal CLI.
+- [x] File permission/symlink tests, wrong passphrase/tag tests and default-deny policy tests.
+- [ ] Independent cryptographic and source security review.
+- [ ] Recovery/restore and password-quality UX.
+- [ ] Cross-platform hardware-backed keys, release signing/provenance.
+- [ ] Independent penetration test, issue-response process and security policy exercise.
+
+## Agent broker release (NOT IMPLEMENTED)
+- [ ] Verified agent principal, binding to workload and user.
+- [ ] Signed, expiring, audience/operation/resource/body-bound grants; revocation and replay protections.
+- [ ] Method/path allowlisted provider adapters, SSRF/redirect defenses, never give agent raw token.
+- [ ] Human approvals for high-impact actions, not agent-writable.
+- [ ] Redacted, tamper-evident audit and adversarial prompt injection tests.
+
+## Beta/GA (BLOCKED)
+- [ ] External audit issues remediated and report disclosed with scope.
+- [ ] Incident response/SLA, update/recovery drill and safe distribution.
+- [ ] Threat modeling, supplier chain, SBOM, versioned crypto upgrade, privacy & legal review.
+- [ ] Trademark clearance and product support plan.
+
+Automated CI tests alone never constitute an external audit, a product security guarantee or GA status.
