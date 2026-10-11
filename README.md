@@ -48,7 +48,7 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - Mac/AI product direction and competitor gaps: docs/MAC-LOCAL-SECRETS-STRATEGY-2026-10-11.md
 - User discovery plan: docs/MAC-VALIDATION-INTERVIEWS.md
 - macOS 26.6.2 arm64 synthetic test evidence: docs/MAC-SYNTHETIC-QA-2026-10-11.md
-- Native SwiftUI synthetic menu bar demo: mac-companion/README.md
+- Native SwiftUI synthetic menu bar and *non-executable* AI approval preview (fictional request, 14 local Mac tests): mac-companion/README.md
 - Swift Package macOS 26.6.2 QA: docs/MAC-COMPANION-QA-2026-10-12.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md
 

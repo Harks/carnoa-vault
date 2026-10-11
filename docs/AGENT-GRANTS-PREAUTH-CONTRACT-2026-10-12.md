@@ -26,6 +26,9 @@ The payload is serialized in one published canonical field order as a JSON array
 
 The implementation exposes **no signer, provider adapter, Keychain interface, Apple Passwords access, credential read, cloud API, socket, agent tool or action execution**. Tests generate ephemeral synthetic signing keys at runtime and do not retain keys.
 
+## Mac synthetic UI cross-reference
+The SwiftUI `SyntheticApprovalSession` inside `mac-companion/` exercises a fictional review / deny / simulate-confirm state machine with an explicit two-minute demo expiry and eight native tests. It intentionally does **not** consume this Ed25519 contract, authenticate the agent, issue a grant or execute an operation. A simulated positive UI decision always has `executable=false`. Do NOT combine the untrusted UI decision with an offline signature result to infer production authorization.
+
 ## Crucial missing trust anchors
 
 The reference verifier CANNOT ascertain that its caller-provided expected subject is an authenticated OS process. It also cannot know whether the trustedPublicKey came from a secure provisioning step or was supplied by the AI agent. It does not provide human consent, revocation, crash-safe replay protection, a multi-device clock, final provider method/path/body enforcement, rate limiting, tenant isolation, or tamper-evident audit logs.

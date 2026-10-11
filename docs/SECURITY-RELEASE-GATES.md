@@ -4,7 +4,7 @@
 - [x] Local encrypted vault + strict metadata validation.
 - [x] Hidden interactive TTY input, no secret-reveal CLI.
 - [x] Experimental local .env.example-only metadata audit returns count-only coverage and rejects nonempty values; this does not authorize secret use.
-- [x] Synthetic-only SwiftUI Mac companion source compiles on Apple Silicon/macOS 26.6.2 with 6 native unit tests; it reads no real credentials or Keychain items.
+- [x] Synthetic-only SwiftUI Mac companion source compiles on Apple Silicon/macOS 26.6.2 with 14 native tests (6 template + 8 non-executable fictional approval), and reads no real credentials or Keychain items. A simulated positive review never authorizes any action.
 - [ ] Signed/notarized native app, Mac sandbox/entitlements, full accessibility/browser UI QA, Keychain/Touch ID implementation and independent review are pending.
 - [x] File permission/symlink tests, strict envelope-only storage and ancestry tests, wrong passphrase/tag tests and default-deny policy tests.
 - [ ] Independent cryptographic and source security review.

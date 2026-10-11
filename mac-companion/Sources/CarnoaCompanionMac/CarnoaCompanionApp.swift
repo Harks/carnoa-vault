@@ -13,6 +13,10 @@ struct CarnoaCompanionApp: App {
             ProjectReadinessView()
                 .frame(minWidth: 520, minHeight: 430)
         }
+        Window("Carnoa — Synthetic AI Approval Preview", id: "agent-demo") {
+            SyntheticAgentApprovalView()
+                .frame(minWidth: 650, minHeight: 460)
+        }
     }
 }
 
@@ -23,6 +27,9 @@ private struct MenuContents: View {
         Text("Carnoa | Experimental synthetic-data preview")
         Button("Open demo dashboard") {
             openWindow(id: "readiness")
+        }
+        Button("Preview fictional AI approval (no access)") {
+            openWindow(id: "agent-demo")
         }
         Divider()
         Text("No Keychain access • No passwords • No AI execution")
