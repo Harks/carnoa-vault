@@ -10,7 +10,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 ## Implemented
 - AES-256-GCM local encryption via built-in Node/OpenSSL crypto, 96-bit random nonce and integrity tag, random 256-bit salt per save, scrypt N=131072/r=8/p=1.
 - Encrypted item names and secret values; only format, vault UUID, cipher/KDF metadata and approximate size remain visible.
-- Local 0700 directory / 0600 file, symlink rejection, atomic write with create-if-absent protection, single-writer lock and bounded input sizes.
+- Local 0700 directory / 0600 file, symlink and symlink-ancestor rejection, **encrypted-envelope-only** file persistence (strict schema), atomic write with create-if-absent protection, single-writer lock and bounded input sizes.
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
 - Hidden interactive TTY prompts: init, put NAME, list, remove NAME. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
 - Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.

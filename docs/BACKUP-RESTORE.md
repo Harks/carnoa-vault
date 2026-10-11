@@ -15,7 +15,7 @@ Backup writes to a randomized filename under ~/.carnoa/backups with 0700 directo
 ## Security model
 1. Backup is a byte-for-byte equivalent of an authenticated Vault JSON object, not a fresh encryption under a new backup password.
 2. Creating a backup requires decrypting and authenticating the source Vault locally first; a wrong password fails before output is created.
-3. Restore validates file permissions, envelope schema, AES-GCM tag and master passphrase locally before publishing the destination.
+3. Restore validates file permissions, exact envelope schema (no unexpected cleartext metadata), AES-GCM tag and master passphrase locally before publishing the destination; symlink ancestors are rejected on both read and write.
 4. Creating a new destination uses a hard-link-based atomic create-if-absent operation with fsync. Concurrent create-only writes cannot overwrite one another.
 5. No plaintext export/print CLI is implemented. No server receives either ciphertext or keys.
 6. Symlinks and group/world-readable individual backup files are rejected. Inherited ancestor directory and same-UID malware attacks are not comprehensively prevented by this prototype.

@@ -47,3 +47,11 @@ test('weak passphrase and malformed items rejected; upsert and remove determinis
   assert.deepEqual(removeItem(two, 'token-a').items, []);
   assert.throws(() => removeItem({items:[]}, 'token-a'), /not found/);
 });
+
+test('strict authenticated envelope schema forbids cleartext extensions', async () => {
+  const envelope = await encryptVault({items:[]}, pass);
+  assert.throws(() => validateEnvelope({...envelope, secret: 'synthetic-cleartext'}), /invalid vault format/);
+  assert.throws(() => validateEnvelope({...envelope, kdf: {...envelope.kdf, password: 'synthetic'}}), /invalid vault format/);
+  assert.throws(() => validateEnvelope({...envelope, cipher: {...envelope.cipher, description: 'synthetic'}}), /invalid vault format/);
+  assert.throws(() => validateEnvelope({ ...envelope, version: 2 }), /vault format/);
+});

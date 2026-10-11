@@ -1,11 +1,34 @@
 import { promises as fs, constants } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { validateEnvelope } from './vault.mjs';
 
 const MAX_BYTES = 12 * 1024 * 1024;
 const noFollow = constants.O_NOFOLLOW || 0;
+
+/** Reject already present symlink ancestors, including paths supplied for restore.
+ * This is not a replacement for dirfd/openat2 against malicious same-UID races. */
+async function checkDirectoryAncestors(directory) {
+  const absolute = path.resolve(directory);
+  const root = path.parse(absolute).root;
+  let current = root;
+  for (const segment of absolute.slice(root.length).split(path.sep).filter(Boolean)) {
+    current = path.join(current, segment);
+    let stat;
+    try { stat = await fs.lstat(current); }
+    catch (error) {
+      if (error.code === 'ENOENT') continue; // A subsequent mkdir will create it.
+      throw error;
+    }
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw new Error('Unsafe vault directory ancestry (symlink or non-directory).');
+    }
+  }
+}
 async function safeDirectory(directory) {
+  await checkDirectoryAncestors(directory);
   await fs.mkdir(directory, { recursive: true, mode: 0o700 });
+  await checkDirectoryAncestors(directory);
   const s = await fs.lstat(directory);
   if (!s.isDirectory() || s.isSymbolicLink() || (s.mode & 0o077)) {
     throw new Error('Vault directory must be non-symlink mode 0700.');
@@ -18,12 +41,13 @@ async function safeFile(filename) {
   }
 }
 export async function readVaultFile(filename) {
+  await checkDirectoryAncestors(path.dirname(path.resolve(filename)));
   await safeFile(filename);
   const handle = await fs.open(filename, constants.O_RDONLY | noFollow);
   try {
     const s = await handle.stat();
     if (!s.isFile() || (s.mode & 0o077) || s.size > MAX_BYTES) throw new Error('Unsafe vault file.');
-    return JSON.parse(await handle.readFile('utf8'));
+    return validateEnvelope(JSON.parse(await handle.readFile('utf8')));
   } finally { await handle.close(); }
 }
 export async function withVaultLock(filename, callback) {
@@ -40,6 +64,8 @@ export async function withVaultLock(filename, callback) {
 }
 /** Must be called under withVaultLock for writes. */
 export async function writeVaultFile(filename, envelope, { createOnly = false } = {}) {
+  // Never persist an unencrypted payload or unrecognized cleartext metadata.
+  validateEnvelope(envelope);
   const directory = path.dirname(path.resolve(filename));
   await safeDirectory(directory);
   if (createOnly) {
