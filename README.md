@@ -14,7 +14,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
 - Hidden interactive TTY prompts: init, put NAME, list, remove NAME. New Vault creation screens obvious/repeating passphrases and requires 15+ Unicode code points; legacy v1 unlock is unchanged. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
 - Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.
-- Node.js 22+, no runtime dependencies, security-negative tests. CI is configured to generate a verified SPDX 2.3 inventory artifact from the lockfile; this is not a signed/reproducible software release.
+- Node.js 22+, no runtime dependencies, security-negative tests. CI generates SPDX 2.3 inventory, and a *main-only source archive attestation* workflow provides digest-bound provenance when GitHub supports it. Neither is a signed/reviewed native binary or cryptographic audit.
 
 ## Run with synthetic data only
 Install Node.js 22 or later.
@@ -40,6 +40,7 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - Encrypted backup / restore: docs/BACKUP-RESTORE.md
 - Passphrase onboarding and proposed recovery architecture: docs/PASSPHRASE-RECOVERY-ADR.md
 - CI and supply-chain: docs/SECURITY-CI.md
+- Source archive checksums/attestation: docs/SOURCE-PROVENANCE.md
 - Security release blockers: docs/SECURITY-RELEASE-GATES.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md
 

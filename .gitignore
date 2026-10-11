@@ -7,3 +7,4 @@ vault.json
 *.vault
 *.lock
 .DS_Store
+dist/
