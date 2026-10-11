@@ -51,7 +51,7 @@ Do not start with browser autofill, Wi-Fi credentials, bulk Apple Passwords inge
 
 ## Trust boundaries and architecture
 
-Apple Passwords / 1Password / Bitwarden continue to manage human logins. Carnoa can build its own test Vault and local inventory without reading their credential databases. Apple AuthenticationServices credential exchange is user-mediated and must NOT be treated as unrestricted third-party read access.
+Apple Passwords / 1Password / Bitwarden continue to manage human logins. Carnoa can build its own test Vault and local inventory without reading their credential databases. Apple AuthenticationServices credential exchange is user-mediated and must NOT be treated as unrestricted third-party read access. macOS 26 exchange requires participating credential-provider extensions and is not a generic credential read API; user-initiated migration is DEFERRED pending demand and independent review. See docs/APPLE-PASSWORDS-CREDENTIAL-EXCHANGE-RESEARCH-2026-10-12.md.
 
 Mac native UI (future): SwiftUI/AppKit, OS Keychain and LocalAuthentication/Touch ID to protect *Carnoa-owned* key material with deliberate per-operation consent. Touch ID approval is NOT a verified AI process identity. Real Broker must bind verified principal, user, resource, action, request fingerprint, grant audience, TTL, revocation and replay protection. No generic HTTP proxy, redirect to arbitrary origins, pasted cookies or secret strings in agent prompts/logs.
 
