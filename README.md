@@ -25,6 +25,7 @@ Install Node.js 22 or later.
     node src/cli.mjs list
     node src/cli.mjs remove synthetic-example
     node src/cli.mjs backup
+    node src/cli.mjs verify-backup /path/to/an/encrypted/backup.json
     # For disaster recovery only, on a device with NO pre-existing Vault:
     node src/cli.mjs restore /path/to/an/encrypted/backup.json
 

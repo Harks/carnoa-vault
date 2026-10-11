@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { promises as fs, realpathSync } from 'node:fs';
 import { encryptVault, decryptVault, putItem } from '../src/vault.mjs';
 import { readVaultFile, writeVaultFile, withVaultLock } from '../src/store.mjs';
-import { exportEncryptedBackup, restoreEncryptedBackup } from '../src/backup.mjs';
+import { exportEncryptedBackup, restoreEncryptedBackup, verifyEncryptedBackup } from '../src/backup.mjs';
 
 const pass = 'synthetic test-only passphrase 2026';
 const different = 'a different test-only passphrase 2026';
@@ -95,4 +95,38 @@ test('parallel create-only files have exactly one winner and do not clobber it',
     assert.equal(outcome.filter(x => x.status === 'rejected').length, 1);
     assert.ok([first.id, second.id].includes((await readVaultFile(dest)).id));
   } finally { await fs.rm(dir, { force: true, recursive: true }); }
+});
+
+test('read-only backup preflight authenticates without mutation or plaintext disclosure', async () => {
+  await fixture(async ({ base, vault, copies }) => {
+    const backup = await exportEncryptedBackup(vault, copies, pass);
+    const before = await fs.readFile(backup);
+    const target = path.join(base, 'should-never-exist', 'vault.json');
+    assert.deepEqual(await verifyEncryptedBackup(backup, pass),
+      { authenticated: true, formatVersion: 1 });
+    assert.deepEqual(await fs.readFile(backup), before);
+    await assert.rejects(fs.stat(target), { code: 'ENOENT' });
+  });
+});
+test('backup preflight rejects wrong passphrase and damaged authentication tag', async () => {
+  await fixture(async ({ vault, copies }) => {
+    const backup = await exportEncryptedBackup(vault, copies, pass);
+    await assert.rejects(verifyEncryptedBackup(backup, different), /unlock failed/);
+    const envelope = JSON.parse(await fs.readFile(backup, 'utf8'));
+    const tag = Buffer.from(envelope.cipher.tag, 'base64');
+    tag[0] ^= 0x80;
+    envelope.cipher.tag = tag.toString('base64');
+    await fs.writeFile(backup, JSON.stringify(envelope), { mode: 0o600 });
+    await assert.rejects(verifyEncryptedBackup(backup, pass), /unlock failed/);
+  });
+});
+test('backup preflight rejects symlinks and insecure permissions without writing anything', async () => {
+  await fixture(async ({ base, vault, copies }) => {
+    const backup = await exportEncryptedBackup(vault, copies, pass);
+    const alias = path.join(base, 'backup-symlink.json');
+    await fs.symlink(backup, alias);
+    await assert.rejects(verifyEncryptedBackup(alias, pass), /Unsafe/);
+    await fs.chmod(backup, 0o644);
+    await assert.rejects(verifyEncryptedBackup(backup, pass), /Unsafe/);
+  });
 });

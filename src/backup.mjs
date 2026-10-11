@@ -23,6 +23,18 @@ export async function exportEncryptedBackup(vaultPath, backupsDirectory, passphr
  * Restore an authenticated encrypted backup, only to a vault path that does NOT exist.
  * A force-overwrite switch is intentionally not supported.
  */
+/**
+ * Pure read-only disaster-recovery preflight. Authenticate a snapshot without
+ * creating a Vault, filesystem lock, temp file, export, or printing item names.
+ * The returned fixed metadata intentionally omits IDs, secrets and item counts.
+ * A valid old snapshot may still be a rollback; this does not guarantee recency.
+ */
+export async function verifyEncryptedBackup(backupPath, passphrase) {
+  const envelope = await readVaultFile(backupPath);
+  await decryptVault(envelope, passphrase);
+  return Object.freeze({ authenticated: true, formatVersion: envelope.version });
+}
+
 export async function restoreEncryptedBackup(vaultPath, backupPath, passphrase) {
   if (path.resolve(vaultPath) === path.resolve(backupPath)) {
     throw new Error('Backup source cannot be the destination.');

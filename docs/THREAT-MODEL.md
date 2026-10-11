@@ -12,7 +12,7 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 | Concurrent local writes | Exclusive lock + rename | Stale lock requires inspection |
 | AI prompt injection | No agent integration or secret reveal CLI | Future broker must enforce actions outside AI |
 | Malicious release / keylogger | Source inspectable | Not mitigated; no reproducible signed releases |
-| Master passphrase loss | No vendor backdoor; optional encrypted snapshot export | Original passphrase is still required; no recovery/key escrow |
+| Master passphrase loss | No vendor backdoor; encrypted snapshot and read-only verification | Original passphrase is still required; no recovery/key escrow |
 | Snapshot rollback | Restore requires local passphrase and refuses overwrite | Legitimate older ciphertext remains authentic; anti-rollback not available |
 
 Mandatory invariants: never print/transmit secret values; fail closed; no credential-exposing generic API; no high-impact operations without independent consent. All testing uses synthetic credentials.
