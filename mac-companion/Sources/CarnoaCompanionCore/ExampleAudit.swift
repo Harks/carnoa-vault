@@ -50,6 +50,11 @@ public enum SyntheticExampleAudit {
     ) throws -> SyntheticCoverage {
         guard fileName == ".env.example" else { throw ExampleAuditError.wrongFileName }
         guard templateData.count <= maxBytes else { throw ExampleAuditError.oversized }
+        // Foundation may transparently discard UTF-8 BOM on decode. Reject
+        // it before decoding, matching the Node file-level security boundary.
+        guard !templateData.starts(with: [0xef, 0xbb, 0xbf]) else {
+            throw ExampleAuditError.malformedLine
+        }
         guard let input = String(data: templateData, encoding: .utf8) else {
             throw ExampleAuditError.invalidUTF8
         }
@@ -57,8 +62,13 @@ public enum SyntheticExampleAudit {
         var names: Set<String> = []
         var required = 0
         var matched = 0
-        for line in input.components(separatedBy: "\n") {
-            let candidate = line.hasSuffix("\r") ? String(line.dropLast()) : line
+        let lines = input.components(separatedBy: "\n")
+        for (index, line) in lines.enumerated() {
+            // Match Node's /\r?\n/ parser exactly: CR belongs to CRLF only,
+            // never strip a lone trailing CR from the end of the file.
+            let hasTerminatingLF = index < lines.count - 1
+            let candidate = hasTerminatingLF && line.hasSuffix("\r")
+                ? String(line.dropLast()) : line
             if candidate.isEmpty { continue }
             if candidate.trimmingCharacters(in: .whitespaces).hasPrefix("#") {
                 continue

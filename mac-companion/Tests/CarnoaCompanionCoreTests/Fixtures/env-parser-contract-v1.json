@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "description": "Shared Node and Swift .env.example parser contract using only fictional data; no real secrets.",
+  "syntheticAvailableKeys": [
+    "GITHUB_TOKEN",
+    "DEMO_DATABASE_URL",
+    "EXAMPLE_FEATURE_FLAG"
+  ],
+  "cases": [
+    {
+      "id": "empty-template",
+      "fileName": ".env.example",
+      "content": "",
+      "valid": true,
+      "required": 0,
+      "matched": 0,
+      "missing": 0
+    },
+    {
+      "id": "synthetic-readiness",
+      "fileName": ".env.example",
+      "content": "# synthetic names only\nGITHUB_TOKEN=\nEXAMPLE_FEATURE_FLAG=\nMISSING_SERVICE=\n",
+      "valid": true,
+      "required": 3,
+      "matched": 2,
+      "missing": 1
+    },
+    {
+      "id": "windows-crlf",
+      "fileName": ".env.example",
+      "content": "GITHUB_TOKEN=\r\nDEMO_DATABASE_URL=\r\n",
+      "valid": true,
+      "required": 2,
+      "matched": 2,
+      "missing": 0
+    },
+    {
+      "id": "comments-tabs",
+      "fileName": ".env.example",
+      "content": "  # comment\n\t# another comment\n  \t# third\nSYNTHETIC_MISSING=\n",
+      "valid": true,
+      "required": 1,
+      "matched": 0,
+      "missing": 1
+    },
+    {
+      "id": "identifier-128-byte-boundary",
+      "fileName": ".env.example",
+      "content": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\n",
+      "valid": true,
+      "required": 1,
+      "matched": 0,
+      "missing": 1
+    },
+    {
+      "id": "single-unmatched",
+      "fileName": ".env.example",
+      "content": "UNKNOWN_KEY=\n",
+      "valid": true,
+      "required": 1,
+      "matched": 0,
+      "missing": 1
+    },
+    {
+      "id": "reject-password-value",
+      "fileName": ".env.example",
+      "content": "GITHUB_TOKEN=synthetic-test-only-value\n",
+      "valid": false
+    },
+    {
+      "id": "reject-shell-expansion",
+      "fileName": ".env.example",
+      "content": "GITHUB_TOKEN=$(example)\n",
+      "valid": false
+    },
+    {
+      "id": "reject-multi-entry-duplicate",
+      "fileName": ".env.example",
+      "content": "A=\nB=\nA=\n",
+      "valid": false
+    },
+    {
+      "id": "reject-key-leading-digit",
+      "fileName": ".env.example",
+      "content": "1API_TOKEN=\n",
+      "valid": false
+    },
+    {
+      "id": "reject-key-space",
+      "fileName": ".env.example",
+      "content": "GITHUB TOKEN=\n",
+      "valid": false
+    },
+    {
+      "id": "reject-trailing-isolated-carriage-return",
+      "fileName": ".env.example",
+      "content": "GITHUB_TOKEN=\r",
+      "valid": false
+    },
+    {
+      "id": "reject-leading-bom",
+      "fileName": ".env.example",
+      "content": "﻿GITHUB_TOKEN=\n",
+      "valid": false
+    },
+    {
+      "id": "reject-whitespace-line",
+      "fileName": ".env.example",
+      "content": "GITHUB_TOKEN=\n   \n",
+      "valid": false
+    },
+    {
+      "id": "reject-real-env-file",
+      "fileName": ".env",
+      "content": "GITHUB_TOKEN=\n",
+      "valid": false
+    },
+    {
+      "id": "reject-other-file",
+      "fileName": "secrets.txt",
+      "content": "GITHUB_TOKEN=\n",
+      "valid": false
+    }
+  ]
+}
