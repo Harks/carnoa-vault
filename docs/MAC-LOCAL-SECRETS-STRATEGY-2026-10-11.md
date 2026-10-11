@@ -44,7 +44,7 @@ Do not start with browser autofill, Wi-Fi credentials, bulk Apple Passwords inge
 
 1. Developer runs a local-only CLI with **synthetic/test credentials** while the project remains unaudited.
 2. A project-maintained .env.example contains only KEY= lines. NEVER inspect .env or read actual credential values.
-3. Local scanner compares expected key names against unlocked local Vault item *names*. Output contains ONLY aggregate required/matched/missing counts, no key names, secrets, IDs or endpoints.
+3. Local scanner compares expected key names against unlocked local Vault item *names*. Output contains ONLY aggregate required/matched/missing counts, no key names, secrets, IDs or endpoints. **Implementation caveat:** v1 decrypts all item values into local process memory together with names; the output is metadata-only, but memory is not. Avoid actual sensitive credentials until a reviewed v2 metadata-isolation design (Issue #27).
 4. Missing coverage becomes a local task for the developer. Do not automatically inject environment variables, start an agent, call APIs or print secret values.
 5. Later, verified local workload identity + explicit user authorization may request a bounded operation, e.g. GitHub list PRs for one repository. Requests and grants must be independently authenticated.
 6. Team approval and incident policy belong to Carnoa Governance. ModelGate receives no credentials.
