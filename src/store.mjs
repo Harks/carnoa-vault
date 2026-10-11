@@ -8,7 +8,7 @@ const noFollow = constants.O_NOFOLLOW || 0;
 
 /** Reject already present symlink ancestors, including paths supplied for restore.
  * This is not a replacement for dirfd/openat2 against malicious same-UID races. */
-async function checkDirectoryAncestors(directory) {
+export async function checkDirectoryAncestors(directory) {
   const absolute = path.resolve(directory);
   const root = path.parse(absolute).root;
   let current = root;
