@@ -7,7 +7,7 @@ Process: feature -> develop PR -> verified develop -> main PR. Tests and doc upd
 | V-001 | P0 | Local AES-GCM vault and CLI | Roundtrip, tamper/wrong passphrase, private filesystem, no secret stdout tests | Implemented, audit pending |
 | V-002 | P0 | Threat model and autonomous AI rules | Owner boundaries, fail-closed gates documented | Implemented |
 | V-003 | P0 | Backup/restore | Encrypted local snapshot, authenticated restore to absent destination, corruption/overwrite tests | Implemented in prototype; external review and recovery drill pending |
-| V-004 | P0 | Passphrase strength & recovery plan | User warning, unrecoverable loss UX, tested offline recovery design | Not started |
+| V-004 | P0 | Passphrase strength & recovery plan | New-Vault minimum and basic offline screening, backward compatibility; user-held recovery key design and drills | Partial: onboarding implemented, recovery-key design ADR only, no recovery implementation |
 | V-008 | P0 | Store boundary and path hardening | Reject unencrypted writes, unknown metadata, and symlink ancestors; negative tests | Implemented in prototype; external review pending |
 | V-009 | P1 | OS-native race-free path binding | Dirfd/openat-style canonical path binding and cross-platform security audit | Blocked: platform design and external review |
 | V-005 | P0 | External audit | Independent reviewer report, findings fixed | Blocked: reviewer |
