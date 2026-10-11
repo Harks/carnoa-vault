@@ -6,7 +6,8 @@
 - [x] File permission/symlink tests, strict envelope-only storage and ancestry tests, wrong passphrase/tag tests and default-deny policy tests.
 - [ ] Independent cryptographic and source security review.
 - [x] Experimental encrypted snapshot restore into absent Vault with corruption/overwrite tests.
-- [ ] Independently reviewed recovery/restore, cross-platform disaster recovery and password-quality UX.
+- [x] Experimental offline minimum-length/common-pattern screen for newly created Vaults; legacy v1 unlock remains supported.
+- [ ] Independently reviewed recovery/restore, offline breach-list screening, cross-platform disaster recovery and password-quality UX.
 - [ ] Cross-platform hardware-backed keys, release signing/provenance.
 - [ ] Validated CodeQL/dependency review, secret scanning, SBOM, signed/provenance-based releases.
 - [ ] Independent penetration test, issue-response process and security policy exercise.

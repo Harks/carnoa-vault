@@ -12,7 +12,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 - Encrypted item names and secret values; only format, vault UUID, cipher/KDF metadata and approximate size remain visible.
 - Local 0700 directory / 0600 file, symlink and symlink-ancestor rejection, **encrypted-envelope-only** file persistence (strict schema), atomic write with create-if-absent protection, single-writer lock and bounded input sizes.
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
-- Hidden interactive TTY prompts: init, put NAME, list, remove NAME. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
+- Hidden interactive TTY prompts: init, put NAME, list, remove NAME. New Vault creation screens obvious/repeating passphrases and requires 15+ Unicode code points; legacy v1 unlock is unchanged. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
 - Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.
 - Node.js 22+, no runtime dependencies, security-negative tests.
 
@@ -37,6 +37,7 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - Architecture / integration: docs/ARCHITECTURE.md and docs/INTEGRATIONS.md
 - Security model: docs/THREAT-MODEL.md
 - Encrypted backup / restore: docs/BACKUP-RESTORE.md
+- Passphrase onboarding and proposed recovery architecture: docs/PASSPHRASE-RECOVERY-ADR.md
 - CI and supply-chain: docs/SECURITY-CI.md
 - Security release blockers: docs/SECURITY-RELEASE-GATES.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md
