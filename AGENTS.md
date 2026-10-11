@@ -7,7 +7,7 @@ Read README, docs/ARCHITECTURE.md, docs/THREAT-MODEL.md, docs/ROADMAP.md, docs/M
 2. Choose the smallest unblocked issue in docs/ROADMAP.md, with testable acceptance criteria.
 3. Add a failing regression/security-negative test first, then minimal implementation and docs.
 4. Run npm run verify, inspect diff, update backlog status with evidence. For changes in mac-companion/, run swift test and swift build -c release --package-path mac-companion on a real Mac, plus GitHub macOS CI. Synthetic approval state MUST remain non-executable; never couple demo button actions to Keychain, real grant issuance, provider network operations, or Vault secrets. Never handle real credentials.
-5. Push a feature branch, open PR to develop, require review for cryptography/authz modifications. After checks, integrate to develop. Create separate develop -> main PR only; NEVER merge feature branches directly to main.
+5. Push a feature branch and open PR to develop; require **independent human review** for cryptography, authentication, authorization, approvals, release signing and native secret handling. After verified CI and required approval, integrate to develop. Create separate develop -> main PR only; NEVER merge feature branches directly to main. **If a host security gate refuses a merge, leave the PR open and report the blocker; never bypass via an alternate GitHub client, token or direct push.**
 6. Document actual evidence, unsupported features and blockers; no fabricated reviews, audit or GA certification.
 
 ## Non-negotiable security boundaries
