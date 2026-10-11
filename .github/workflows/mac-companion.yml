@@ -1,0 +1,30 @@
+name: macOS synthetic companion CI
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'mac-companion/**'
+      - '.github/workflows/mac-companion.yml'
+  push:
+    branches: [develop, main]
+    paths:
+      - 'mac-companion/**'
+      - '.github/workflows/mac-companion.yml'
+permissions:
+  contents: read
+jobs:
+  swift-synthetic:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Record Swift/macOS SDK version
+        run: |
+          xcrun swift --version
+          xcrun --sdk macosx --show-sdk-version
+      - name: Execute strictly synthetic unit tests
+        run: swift test --package-path mac-companion
+      - name: Compile native menu bar executable (never launch)
+        run: swift build --configuration release --package-path mac-companion

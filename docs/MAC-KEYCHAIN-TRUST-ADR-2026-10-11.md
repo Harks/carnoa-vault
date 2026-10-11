@@ -38,6 +38,9 @@ The current Node.js v1 encrypted Vault is experimental. It decrypts a whole auth
 4. Agent requests are demonstrated as non-executable proposals with a visible target operation, resource, principal claim, TTL, consent and denial. A proposal is not an issued grant.
 5. No provider calls, background API credentials, Apple Passwords import, browser extension, startup auto-run, cloud sync or telemetry.
 
+## Prototype evidence (2026-10-12)
+A mac-companion SwiftUI MenuBarExtra and fixture-only dashboard now compile on a real Apple Silicon Mac. Six native Swift unit tests pass and release-mode compilation succeeds. The Swift UI accepts only a user-selected .env.example, displays synthetic counts, and deliberately does not access the Node Vault, Apple Passwords, Keychain, LocalAuthentication or any AI provider. It is source-only, unsigned/unnotarized and not approved for real secrets. See docs/MAC-COMPANION-QA-2026-10-12.md.
+
 ## Pending design choices (require ADR review)
 
 - Separate native process/XPC boundary vs monolithic AppKit/SwiftUI shell.
