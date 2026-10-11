@@ -11,7 +11,7 @@
     "carnoa-vault": "./src/cli.mjs"
   },
   "scripts": {
-    "check": "node --check src/vault.mjs && node --check src/store.mjs && node --check src/backup.mjs && node --check src/passphrase-policy.mjs && node --check src/policy.mjs && node --check src/cli.mjs",
+    "check": "node --check src/vault.mjs && node --check src/store.mjs && node --check src/backup.mjs && node --check src/passphrase-policy.mjs && node --check src/policy.mjs && node --check src/cli.mjs && node --check src/env-template.mjs",
     "test": "node --test --test-concurrency=1",
     "verify": "npm run check && npm test",
     "release:source": "node scripts/build-source-release.mjs dist"

@@ -1,5 +1,8 @@
 # Product requirements — 2026-10-10
 
+## Strategy update (2026-10-11)
+Keep Apple Passwords for human logins. Lead with Mac-local developer project secrets readiness, then independently verified operation-level AI Agent Broker. Avoid competing consumer autofill, unattended Apple credential reads or provider imports. See docs/MAC-LOCAL-SECRETS-STRATEGY-2026-10-11.md.
+
 ## Who and why
 Developers who use Claude Code, Codex, IDE agents and multiple SaaS APIs need safely scoped AI operations without exposing reusable API tokens or passwords to the model, hosted vendor or logs. A solo-maintained product must provide inspectable cryptography, secure defaults and externally reviewable releases rather than relying on founder reputation.
 
@@ -8,6 +11,9 @@ Carnoa Vault: local offline password/API-secret storage. Future Carnoa Agent Bro
 
 ## Current MVP
 Local encrypted JSON vault; hidden TTY create/upsert/list/remove; fail-closed integrity/permissions; offline read-grant policy reference; regression tests and docs. No agent credential execution path yet. Intentionally no CLI plaintext secret output.
+
+## Additional safe prototype capability
+Read-only .env.example coverage against unlocked Vault item names, aggregate counts only. This is not a raw key injector, token broker or Mac OS password manager integration.
 
 ## Non-goals now
 No browser plugin, autofill, cross-device backup/recovery, credential export, HTTP server, OAuth integration, real Github token proxy, self-hosted cloud, external security certification, AI automatic write action.

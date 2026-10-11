@@ -13,6 +13,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 - Local 0700 directory / 0600 file, symlink and symlink-ancestor rejection, **encrypted-envelope-only** file persistence (strict schema), atomic write with create-if-absent protection, single-writer lock and bounded input sizes.
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
 - Hidden interactive TTY prompts: init, put NAME, list, remove NAME. New Vault creation screens obvious/repeating passphrases and requires 15+ Unicode code points; legacy v1 unlock is unchanged. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
+- Local **.env.example-only audit** compares project-required variable names with decrypted Vault item names, printing aggregate counts only; no real .env parsing, plaintext export, environment injection or AI tool access.
 - Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.
 - Node.js 22+, no runtime dependencies, security-negative tests. CI generates SPDX 2.3 inventory, and a *main-only source archive attestation* workflow provides digest-bound provenance when GitHub supports it. Neither is a signed/reviewed native binary or cryptographic audit.
 
@@ -23,6 +24,8 @@ Install Node.js 22 or later.
     node src/cli.mjs init
     node src/cli.mjs put synthetic-example
     node src/cli.mjs list
+    # For a synthetic project with only EMPTY NAME= lines in .env.example:
+    node src/cli.mjs audit-env /absolute/path/to/.env.example
     node src/cli.mjs remove synthetic-example
     node src/cli.mjs backup
     node src/cli.mjs verify-backup /path/to/an/encrypted/backup.json
@@ -42,6 +45,8 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - CI and supply-chain: docs/SECURITY-CI.md
 - Source archive checksums/attestation: docs/SOURCE-PROVENANCE.md
 - Security release blockers: docs/SECURITY-RELEASE-GATES.md
+- Mac/AI product direction and competitor gaps: docs/MAC-LOCAL-SECRETS-STRATEGY-2026-10-11.md
+- User discovery plan: docs/MAC-VALIDATION-INTERVIEWS.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md
 
 Carnoa brand/trademark clearance remains pending. License: Apache-2.0.

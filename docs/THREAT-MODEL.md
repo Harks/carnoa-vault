@@ -15,6 +15,8 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 | Master passphrase loss | No vendor backdoor; encrypted snapshot and read-only verification | Original passphrase is still required; no recovery/key escrow |
 | Snapshot rollback | Restore requires local passphrase and refuses overwrite | Legitimate older ciphertext remains authentic; anti-rollback not available |
 
+Metadata-only example template threat: refuse actual .env files and nonempty values, duplicates, symlink paths, oversized templates and malicious input; return only aggregate counts. This is not proof that any key is valid, fresh, scoped or safe for AI use. Same-UID process/path races and already-compromised hosts remain unmitigated.
+
 Mandatory invariants: never print/transmit secret values; fail closed; no credential-exposing generic API; no high-impact operations without independent consent. All testing uses synthetic credentials.
 
 Out of scope today: same-device malware, memory forensics, secure enclaves, OS-specific permission anomalies, browser extension injection, backups, multi-device key exchange, incident monitoring and snapshot rollback. All require review before launch.

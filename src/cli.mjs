@@ -7,9 +7,10 @@ import { encryptVault, decryptVault, putItem, removeItem } from './vault.mjs';
 import { readVaultFile, withVaultLock, writeVaultFile } from './store.mjs';
 import { exportEncryptedBackup, restoreEncryptedBackup, verifyEncryptedBackup } from './backup.mjs';
 import { validateNewMasterPassphrase } from './passphrase-policy.mjs';
+import { readEnvExample, auditEnvCoverage } from './env-template.mjs';
 
 const vaultPath = path.join(homedir(), '.carnoa', 'vault.json');
-const usage = 'Usage: carnoa-vault <init | put NAME | list | remove NAME | backup | verify-backup ENCRYPTED_FILE | restore ENCRYPTED_FILE>\nSecrets cannot be supplied via argv/env/stdin pipes.\n';
+const usage = 'Usage: carnoa-vault <init | put NAME | list | remove NAME | backup | verify-backup ENCRYPTED_FILE | restore ENCRYPTED_FILE | audit-env /path/to/.env.example>\nSecrets cannot be supplied via argv/env/stdin pipes.\n';
 function safeCompare(a, b) {
   const x = Buffer.from(a, 'utf8'), y = Buffer.from(b, 'utf8');
   const matches = x.length === y.length && timingSafeEqual(x, y);
@@ -50,8 +51,8 @@ function hiddenPrompt(label) {
 async function main() {
   const [action, name, ...extra] = process.argv.slice(2);
   if (action === '--help' || action === 'help') { stdout.write(usage); return; }
-  if (extra.length || !['init','put','list','remove','backup','verify-backup','restore'].includes(action) ||
-      (['put','remove','restore','verify-backup'].includes(action) !== (typeof name === 'string'))) throw new Error(usage.trim());
+  if (extra.length || !['init','put','list','remove','backup','verify-backup','restore','audit-env'].includes(action) ||
+      (['put','remove','restore','verify-backup','audit-env'].includes(action) !== (typeof name === 'string'))) throw new Error(usage.trim());
   if (action === 'init') {
     stdout.write('Choose a long, unique passphrase; there is no operator reset or recovery.\n');
     const passphrase = await hiddenPrompt('New passphrase: ');
@@ -67,6 +68,17 @@ async function main() {
   if (action === 'verify-backup') {
     await verifyEncryptedBackup(path.resolve(name), passphrase);
     stdout.write('Encrypted backup authentication passed. Not checked: recency, rollback or password recovery.\n');
+    return;
+  }
+  if (action === 'audit-env') {
+    // Refuse real .env files before accessing the local Vault.
+    const templateKeys = await readEnvExample(name);
+    const state = await decryptVault(await readVaultFile(vaultPath), passphrase);
+    const result = auditEnvCoverage(templateKeys, state.items.map(item => item.name));
+    stdout.write('Local template audit: required=' + result.required +
+      ', matched=' + result.matched + ', missing=' + result.missing +
+      '. No secrets printed or injected.\n');
+    if (result.missing > 0) process.exitCode = 2;
     return;
   }
   if (action === 'list') {
