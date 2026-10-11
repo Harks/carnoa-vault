@@ -14,7 +14,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
 - Hidden interactive TTY prompts: init, put NAME, list, remove NAME. New Vault creation screens obvious/repeating passphrases and requires 15+ Unicode code points; legacy v1 unlock is unchanged. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
 - Local **.env.example-only audit** compares project-required variable names with decrypted Vault item names, printing aggregate counts only; no real .env parsing, plaintext export, environment injection or AI tool access. **v1 decrypts the entire local Vault (including secret values) into process memory** to inspect those names; it does not print or transmit them. Use synthetic data only; v2 metadata separation requires independent review.
-- Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.
+- Pure offline **reference-only** agent read-policy evaluator and a test-only Ed25519 signed grant contract. Neither can authorize a real operation, authenticate a workload, access credentials or run a provider request. See docs/AGENT-GRANTS-PREAUTH-CONTRACT-2026-10-12.md.
 - Node.js 22+, no runtime dependencies, security-negative tests. CI generates SPDX 2.3 inventory, and a *main-only source archive attestation* workflow provides digest-bound provenance when GitHub supports it. Neither is a signed/reviewed native binary or cryptographic audit.
 
 ## Run with synthetic data only

@@ -15,6 +15,9 @@ Persistence: 0700 final directory, 0600 file, O_NOFOLLOW open, inode type and mo
 ## Local metadata-only developer secrets coverage (prototype, 2026-10-11)
 The local env-template module reads ONLY a filename exactly .env.example, rejects symlinks/ancestor symlinks, oversized files, invalid variable names, duplicate keys and any non-empty KEY=value lines. It compares key names against an already-unlocked local Vault's item names, returning only required/matched/missing totals. It never outputs names, secrets, URLs or values; it does not read a real .env file, produce runtime environment variables or execute an agent request. For a Mac with OS-level symlink aliases use canonical paths. Same-UID races remain unmitigated.
 
+## Offline signed grant contract reference (2026-10-12)
+src/agent-grant-contract.mjs verifies only a strict Ed25519 signed reference grant with exact synthetic subject/audience/github repository/read-only operation/request digest/nonce/time bounds. It uses an ephemeral single-process nonce Set and returns executable=false **even on a valid signature**. No signing private key, network API, provider token, process identity, Keychain or Apple Passwords integration is exposed. Caller-supplied expected principal/public key can be forged if agent-controlled; this is intentionally NOT the production trust boundary. See docs/AGENT-GRANTS-PREAUTH-CONTRACT-2026-10-12.md and Issue #6.
+
 ## Offline policy reference
 evaluateAgentRead is a pure evaluation helper. Inputs are forgeable by an AI or another caller. It MUST NOT be exposed as a security enforcement API. The real broker must independently verify signed workload identity, grants, audience, path/method/body, revocation, replay protection, host allowlists, no redirects/SSRF, consent and audit.
 

@@ -13,7 +13,7 @@ Process: feature -> develop PR -> verified develop -> main PR. Tests and doc upd
 | V-005 | P0 | External audit | Independent reviewer report, findings fixed | Blocked: reviewer |
 | V-006 | P1 | Argon2id + versioned migration | Audited dependency, parameter benchmark, old-file tests | Not started |
 | V-007 | P1 | OS native key wrapping | Keychain/DPAPI test fixtures, cross-platform review | Not started |
-| B-001 | P0 | Real verified broker identities/grants | Forgery/expiry/replay/revocation negative tests | Not started |
+| B-001 | P0 | Real verified broker identities/grants | Forgery/expiry/replay/revocation negative tests | Offline synthetic Ed25519 verification reference and 8 negative/positive tests added; NO verified workload identity, persistent revocation, executable grant, real broker or user consent. Still not started as production auth |
 | B-002 | P0 | Read-only Github provider adapter | Exact GET allowlist, no redirects/SSRF/token return | Blocked: B-001 |
 | B-003 | P0 | Human consent and audit | Verified approval outside AI, redaction and integrity | Blocked: B-001 |
 | O-001 | P0 | CI supply-chain hardening | Pin actions, CodeQL, secret scan, dependency review, provenance | Partial: Node/CodeQL and SPDX artifacts verified; GitHub dependency-review unsupported and native distribution review pending |
