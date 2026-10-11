@@ -17,6 +17,8 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 
 Local example-template audit threat: refuse actual .env files and nonempty values, duplicates, symlink paths, oversized templates and malicious input; return only aggregate counts. **Current v1 still decrypts the whole Vault, including secret values, into process memory in order to read item names.** Values are not logged, emitted or transmitted by the audit; but process inspection, malware and crash dumps remain a risk. v2 should authenticate/decrypt only the necessary metadata without loading secret values (Issue #27, requires independent crypto review). This is not proof any key is valid, fresh, scoped or safe for AI. Same-UID path races and compromised hosts remain unmitigated.
 
+Parser equivalence regression threat: automatic UTF-8 BOM removal by Node TextDecoder or Swift Foundation could silently turn malformed raw input into accepted template lines. Reject BOM before decoding in both runtimes. CR may only terminate CRLF, not appear alone at EOF. Shared Node/Swift synthetic contract checks the same inputs; it does not certify any real file I/O or cryptographic safety.
+
 Mandatory invariants: never print/transmit secret values; fail closed; no credential-exposing generic API; no high-impact operations without independent consent. All testing uses synthetic credentials.
 
 Out of scope today: same-device malware, memory forensics, secure enclaves, OS-specific permission anomalies, browser extension injection, backups, multi-device key exchange, incident monitoring and snapshot rollback. All require review before launch.
