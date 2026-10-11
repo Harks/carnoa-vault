@@ -6,7 +6,7 @@ Read README, docs/ARCHITECTURE.md, docs/THREAT-MODEL.md, docs/ROADMAP.md, docs/M
 1. Inspect git branches, PRs, CI status and concurrent work; never overwrite others' changes.
 2. Choose the smallest unblocked issue in docs/ROADMAP.md, with testable acceptance criteria.
 3. Add a failing regression/security-negative test first, then minimal implementation and docs.
-4. Run npm run verify, inspect diff, update backlog status with evidence. Never handle real credentials.
+4. Run npm run verify, inspect diff, update backlog status with evidence. For changes in mac-companion/, run swift test and swift build -c release --package-path mac-companion on a real Mac, plus GitHub macOS CI. Never handle real credentials.
 5. Push a feature branch, open PR to develop, require review for cryptography/authz modifications. After checks, integrate to develop. Create separate develop -> main PR only; NEVER merge feature branches directly to main.
 6. Document actual evidence, unsupported features and blockers; no fabricated reviews, audit or GA certification.
 
