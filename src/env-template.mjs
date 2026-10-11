@@ -48,7 +48,15 @@ export async function readEnvExample(filename) {
       throw new Error('Unsafe or oversized example template.');
     }
     const bytes = await handle.readFile();
-    try { return parseEnvExample(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); }
+    try {
+      // TextDecoder consumes a UTF-8 BOM by default, which could turn a
+      // rejected raw template into an unexpectedly accepted one.
+      if (bytes.length >= 3 && bytes[0] === 0xef &&
+          bytes[1] === 0xbb && bytes[2] === 0xbf) {
+        throw new Error('BOM is not allowed.');
+      }
+      return parseEnvExample(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+    }
     catch { throw new Error('Invalid or non-empty example template.'); }
     finally { bytes.fill(0); }
   } finally { await handle.close(); }
