@@ -33,7 +33,7 @@ test('cannot pass a credential as extra argv and never echoes it', () => {
 test('stdin pipes are rejected for new passphrases, backups and restores', () => {
   const home = mkdtempSync(path.join(tmpdir(), 'carnoa-cli-test-'));
   try {
-    for (const args of [['init'],['backup'],['verify-backup','/tmp/fake-synthetic-backup.json'],['restore','/tmp/fake-synthetic-backup.json']]) {
+    for (const args of [['init'],['backup'],['verify-backup','/tmp/fake-synthetic-backup.json'],['restore','/tmp/fake-synthetic-backup.json'],['audit-env','/tmp/fake/.env.example']]) {
       const result = run(args, home, 'fake-synthetic-secret\n');
       assert.notEqual(result.status, 0);
       assert.match(result.stderr, /Interactive local terminal required/);

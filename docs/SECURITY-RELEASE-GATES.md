@@ -3,6 +3,7 @@
 ## Experimental (current)
 - [x] Local encrypted vault + strict metadata validation.
 - [x] Hidden interactive TTY input, no secret-reveal CLI.
+- [x] Experimental local .env.example-only metadata audit returns count-only coverage and rejects nonempty values; this does not authorize secret use.
 - [x] File permission/symlink tests, strict envelope-only storage and ancestry tests, wrong passphrase/tag tests and default-deny policy tests.
 - [ ] Independent cryptographic and source security review.
 - [x] Experimental encrypted snapshot restore into absent Vault with corruption/overwrite tests.

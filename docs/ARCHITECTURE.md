@@ -12,6 +12,9 @@ Encryption key: Node crypto.scrypt master passphrase + random 32-byte salt (N=13
 
 Persistence: 0700 final directory, 0600 file, O_NOFOLLOW open, inode type and mode validation, 12 MiB file limit, random temporary file in same directory, fsync and atomic replacement for existing Vaults, hard-link create-if-absent for new Vaults/snapshots, single writer lock. Symlink filesystem ancestors / same-UID malware / snapshots are outside guaranteed protection. A valid whole-file rollback cannot be detected in v1.
 
+## Local metadata-only developer secrets coverage (prototype, 2026-10-11)
+The local env-template module reads ONLY a filename exactly .env.example, rejects symlinks/ancestor symlinks, oversized files, invalid variable names, duplicate keys and any non-empty KEY=value lines. It compares key names against an already-unlocked local Vault's item names, returning only required/matched/missing totals. It never outputs names, secrets, URLs or values; it does not read a real .env file, produce runtime environment variables or execute an agent request. For a Mac with OS-level symlink aliases use canonical paths. Same-UID races remain unmitigated.
+
 ## Offline policy reference
 evaluateAgentRead is a pure evaluation helper. Inputs are forgeable by an AI or another caller. It MUST NOT be exposed as a security enforcement API. The real broker must independently verify signed workload identity, grants, audience, path/method/body, revocation, replay protection, host allowlists, no redirects/SSRF, consent and audit.
 
