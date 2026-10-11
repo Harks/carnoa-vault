@@ -9,7 +9,7 @@
 - [x] Experimental offline minimum-length/common-pattern screen for newly created Vaults; legacy v1 unlock remains supported.
 - [ ] Independently reviewed recovery/restore, offline breach-list screening, cross-platform disaster recovery and password-quality UX.
 - [ ] Cross-platform hardware-backed keys, release signing/provenance.
-- [ ] Validated CodeQL/dependency review, secret scanning, SBOM, signed/provenance-based releases.
+- [ ] Validated CodeQL/dependency review, secret scanning and a successful uploaded SPDX SBOM artifact; signed/provenance-based releases are still pending.
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 ## Agent broker release (NOT IMPLEMENTED)
