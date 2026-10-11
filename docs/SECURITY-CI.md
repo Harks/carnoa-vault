@@ -12,10 +12,12 @@ Repository-level GitHub API settings enabled on 2026-10-11: secret scanning, pus
 
 **Dependency-review blocker:** GitHub Actions explicitly reported that Dependency review is not supported on this repository. The conditional job is skipped unless a repository admin sets CARNOA_DEPENDENCY_REVIEW_SUPPORTED=true after fixing dependency graph support and verifying a successful PR run. The default skip is visible and must remain a release-readiness blocker. No third-party runtime dependencies exist today; test/supply-chain.test.mjs explicitly rejects any new dependency and mutable CI action tags.
 
+Source-only provenance: source-provenance.yml runs on **main push only**, packages an explicit allowlist twice using npm pack --ignore-scripts, checks byte-identical SHA-256 digests, publishes the ephemeral artifact and generates a GitHub OIDC/Sigstore attestation. This must be verified against the actual GitHub main workflow run before claiming it operates. The signer identity is only as trustworthy as the protected main branch and reviewed CI configuration. GitHub rulesets list was empty as of 2026-10-11 and reading legacy branch protection returned 403; enforcement is unverified (Issue #21). See docs/SOURCE-PROVENANCE.md.
+
 Still pending / nonclaims:
-- Prove CodeQL and dependency review workflows green on GitHub; do not mark them supported just because workflow YAML exists.
-- SBOM GitHub workflow must pass with an uploaded SPDX 2.3 artifact (locally validated); release artifact provenance, reproducible builds and signing are still not implemented.
-- Supply-chain incident response, independent crypto audit, cross-platform OS keychain and malicious update testing.
+- Node 22/24, CodeQL and SPDX SBOM generation have passed on GitHub main. Dependency Review remains **unsupported/skipped** and is still an explicit release blocker. Source attestation needs a successful main run and external verifier drill before it is considered complete.
+- SPDX 2.3 SBOM was uploaded and validated on main; source provenance workflow awaits successful main-run verification. Independently reproducible/signed native artifacts remain unimplemented.
+- Signed and independently reproducible native releases, long-term artifact retention, supply-chain incident response, independent crypto audit, cross-platform OS keychain and malicious update testing.
 - Secret scanning setup and a tested vulnerability reporting runbook.
 
 Requirements:

@@ -9,7 +9,7 @@ test('runtime intentionally has zero third-party dependency executables', () => 
   }
 });
 test('CI workflow actions are pinned to immutable full 40-byte SHA', () => {
-  for (const name of ['ci.yml', 'sbom.yml']) {
+  for (const name of ['ci.yml', 'sbom.yml', 'source-provenance.yml']) {
     const workflow = readFileSync(new URL('../.github/workflows/' + name, import.meta.url), 'utf8');
     const references = workflow.matchAll(/^\s*(?:-\s*)?uses:\s+([^\s#]+)/gm);
     const actions = [...references].map(match => match[1]);

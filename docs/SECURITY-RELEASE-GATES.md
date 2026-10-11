@@ -8,8 +8,10 @@
 - [x] Experimental encrypted snapshot restore into absent Vault with corruption/overwrite tests.
 - [x] Experimental offline minimum-length/common-pattern screen for newly created Vaults; legacy v1 unlock remains supported.
 - [ ] Independently reviewed recovery/restore, offline breach-list screening, cross-platform disaster recovery and password-quality UX.
-- [ ] Cross-platform hardware-backed keys, release signing/provenance.
-- [ ] Validated CodeQL/dependency review, secret scanning and a successful uploaded SPDX SBOM artifact; signed/provenance-based releases are still pending.
+- [ ] Cross-platform hardware-backed keys and signed/reproducible native binaries. Experimental source archive provenance requires real main-run evidence.
+- [x] CodeQL and Node tests passed; SPDX 2.3 SBOM uploaded and validated on GitHub main.
+- [ ] Dependency Review capability still unsupported; secret scanning effectiveness/drill not validated.
+- [ ] Source OIDC attestation must pass on main and be independently verified; signed native binaries are not implemented.\n- [ ] Main/develop branch protection and independent approval enforcement (Issue #21) have not been verified.
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 ## Agent broker release (NOT IMPLEMENTED)
