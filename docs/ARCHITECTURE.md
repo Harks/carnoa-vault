@@ -23,4 +23,10 @@ evaluateAgentRead is a pure evaluation helper. Inputs are forgeable by an AI or 
 
 Local encrypted backups are copies of the authenticated envelope. The exporter validates the passphrase and the restore path does not replace an existing Vault. See docs/BACKUP-RESTORE.md. Same-version valid snapshots can still be replayed; there is no anti-rollback device counter.
 
+## Persistence trust hardening (2026-10-11)
+- `readVaultFile` and `writeVaultFile` validate **exact** v1 envelope fields; unknown top-level, KDF or cipher keys are rejected, even if the encrypted fields are otherwise valid. This prevents accidental plaintext attachments by future callers. Envelope structure validation does not authenticate the data: AES-GCM verification on decrypt is still essential.
+- Existing v1 app-generated envelopes are compatible. Any future extra metadata requires an explicit version migration and encryption/privacy review. The store is **not a generic JSON writer**.
+- Directory ancestry is checked for existing symlinks (including restore source paths) before writes and reads. Callers on platforms with OS-level aliases such as macOS `/var -> /private/var` should use canonical paths. The destination private leaf folder remains mode 0700.
+- **Limit:** Node's lstat / mkdir / open sequences are not atomically bound to directory descriptors. A malicious same-UID process can race or replace paths, and an unlocked endpoint remains a high-risk boundary. Native openat2/dirfd-based handling would require a separately audited adapter. Do not claim protection against local malware.
+
 Major crypto/data format changes require separate ADR, compatibility tests and external review.

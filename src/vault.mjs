@@ -6,6 +6,13 @@ const N = 131072, R = 8, P = 1, MAXMEM = 256 * 1024 * 1024;
 const MAX_CIPHER = 8 * 1024 * 1024;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+function exactFields(object, fields) {
+  if (!object || typeof object !== 'object' || Array.isArray(object) ||
+      Object.getPrototypeOf(object) !== Object.prototype ||
+      Object.keys(object).sort().join(',') !== [...fields].sort().join(',')) {
+    throw new Error('Unsupported or invalid vault format.');
+  }
+}
 const b64 = (bytes) => bytes.toString('base64');
 function parse64(value, length) {
   if (typeof value !== 'string' || value.length > 12_000_000 || !BASE64.test(value)) throw new Error('Invalid vault format.');
@@ -37,6 +44,9 @@ async function keyFor(passphrase, salt) {
   return /** @type {Buffer} */ (await derive(passphrase, salt, 32, { N, r: R, p: P, maxmem: MAXMEM }));
 }
 export function validateEnvelope(x) {
+  exactFields(x, ['format', 'version', 'id', 'kdf', 'cipher']);
+  exactFields(x.kdf, ['name', 'N', 'r', 'p', 'salt']);
+  exactFields(x.cipher, ['name', 'nonce', 'tag', 'data']);
   if (!x || typeof x !== 'object' || Array.isArray(x) ||
       x.format !== 'carnoa-vault' || x.version !== 1 || !UUID.test(x.id) ||
       !x.kdf || x.kdf.name !== 'scrypt' || x.kdf.N !== N || x.kdf.r !== R || x.kdf.p !== P ||

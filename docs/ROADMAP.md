@@ -8,6 +8,8 @@ Process: feature -> develop PR -> verified develop -> main PR. Tests and doc upd
 | V-002 | P0 | Threat model and autonomous AI rules | Owner boundaries, fail-closed gates documented | Implemented |
 | V-003 | P0 | Backup/restore | Encrypted local snapshot, authenticated restore to absent destination, corruption/overwrite tests | Implemented in prototype; external review and recovery drill pending |
 | V-004 | P0 | Passphrase strength & recovery plan | User warning, unrecoverable loss UX, tested offline recovery design | Not started |
+| V-008 | P0 | Store boundary and path hardening | Reject unencrypted writes, unknown metadata, and symlink ancestors; negative tests | Implemented in prototype; external review pending |
+| V-009 | P1 | OS-native race-free path binding | Dirfd/openat-style canonical path binding and cross-platform security audit | Blocked: platform design and external review |
 | V-005 | P0 | External audit | Independent reviewer report, findings fixed | Blocked: reviewer |
 | V-006 | P1 | Argon2id + versioned migration | Audited dependency, parameter benchmark, old-file tests | Not started |
 | V-007 | P1 | OS native key wrapping | Keychain/DPAPI test fixtures, cross-platform review | Not started |

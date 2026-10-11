@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import { promises as fs } from 'node:fs';
+import { promises as fs, realpathSync } from 'node:fs';
 import { encryptVault, decryptVault, putItem } from '../src/vault.mjs';
 import { readVaultFile, writeVaultFile, withVaultLock } from '../src/store.mjs';
 import { exportEncryptedBackup, restoreEncryptedBackup } from '../src/backup.mjs';
@@ -11,7 +11,7 @@ const pass = 'synthetic test-only passphrase 2026';
 const different = 'a different test-only passphrase 2026';
 
 async function fixture(run) {
-  const base = await fs.mkdtemp(path.join(tmpdir(), 'carnoa-backup-test-'));
+  const base = await fs.mkdtemp(path.join(realpathSync(tmpdir()), 'carnoa-backup-test-'));
   const vault = path.join(base, 'current', 'vault.json');
   const copies = path.join(base, 'backups');
   try {
@@ -82,15 +82,17 @@ test('backup source cannot be target and orphan writer locks are not silently re
 });
 
 test('parallel create-only files have exactly one winner and do not clobber it', async () => {
-  const dir = await fs.mkdtemp(path.join(tmpdir(), 'carnoa-atomic-test-'));
+  const dir = await fs.mkdtemp(path.join(realpathSync(tmpdir()), 'carnoa-atomic-test-'));
   try {
     const dest = path.join(dir, 'vault.json');
+    const first = await encryptVault({items:[]}, pass);
+    const second = await encryptVault({items:[]}, pass);
     const outcome = await Promise.allSettled([
-      writeVaultFile(dest, { source: 'first' }, { createOnly: true }),
-      writeVaultFile(dest, { source: 'second' }, { createOnly: true })
+      writeVaultFile(dest, first, { createOnly: true }),
+      writeVaultFile(dest, second, { createOnly: true })
     ]);
     assert.equal(outcome.filter(x => x.status === 'fulfilled').length, 1);
     assert.equal(outcome.filter(x => x.status === 'rejected').length, 1);
-    assert.ok(['first', 'second'].includes((await readVaultFile(dest)).source));
+    assert.ok([first.id, second.id].includes((await readVaultFile(dest)).id));
   } finally { await fs.rm(dir, { force: true, recursive: true }); }
 });
