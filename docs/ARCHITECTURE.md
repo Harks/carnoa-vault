@@ -15,6 +15,9 @@ Persistence: 0700 final directory, 0600 file, O_NOFOLLOW open, inode type and mo
 ## Local metadata-only developer secrets coverage (prototype, 2026-10-11)
 The local env-template module reads ONLY a filename exactly .env.example, rejects symlinks/ancestor symlinks, oversized files, invalid variable names, duplicate keys and any non-empty KEY=value lines. It compares key names against an already-unlocked local Vault's item names, returning only required/matched/missing totals. It never outputs names, secrets, URLs or values; it does not read a real .env file, produce runtime environment variables or execute an agent request. For a Mac with OS-level symlink aliases use canonical paths. Same-UID races remain unmitigated.
 
+## Cross-language configuration template contract (2026-10-12)
+The strict .env.example parser is independently implemented in Node and Swift but tested against one shared 16-case synthetic fixture (docs/ENV-PARSER-PARITY-CONTRACT-2026-10-12.md). Both reject leading UTF-8 BOM before decoding, isolated trailing CR, shell syntax and nonempty values, while accepting valid Windows CRLF. Node and Swift tests load the same JSON fixture; runtime filesystem safety and memory isolation remain separately unverified.
+
 ## Offline signed grant contract reference (2026-10-12)
 src/agent-grant-contract.mjs verifies only a strict Ed25519 signed reference grant with exact synthetic subject/audience/github repository/read-only operation/request digest/nonce/time bounds. It uses an ephemeral single-process nonce Set and returns executable=false **even on a valid signature**. No signing private key, network API, provider token, process identity, Keychain or Apple Passwords integration is exposed. Caller-supplied expected principal/public key can be forged if agent-controlled; this is intentionally NOT the production trust boundary. See docs/AGENT-GRANTS-PREAUTH-CONTRACT-2026-10-12.md and Issue #6.
 

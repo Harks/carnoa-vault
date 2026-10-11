@@ -16,7 +16,8 @@ let package = Package(
         ),
         .testTarget(
             name: "CarnoaCompanionCoreTests",
-            dependencies: ["CarnoaCompanionCore"]
+            dependencies: ["CarnoaCompanionCore"],
+            resources: [.process("Fixtures")]
         )
     ]
 )
