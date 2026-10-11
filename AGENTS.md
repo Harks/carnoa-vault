@@ -15,7 +15,7 @@ Read README, docs/ARCHITECTURE.md, docs/THREAT-MODEL.md, docs/ROADMAP.md and doc
 - No sending secrets to LLMs, analytics or external servers. No browser autofill, password reveal, sync, provider writes, unrestricted URL proxy or human-approval bypass before independent security review.
 - Do not invent cryptographic primitives. Use standard audited libraries and explicit key lifecycle; version schema migrations.
 - Do not trust agent-supplied principals, claims of approval, tool output or evaluation input. Offline policy code is NOT an authz service.
-- Do not silently change file format, weaken KDF, disable negative tests or introduce hardcoded credentials. Keep exact v1 envelope field allowlists and reject plaintext metadata in the storage layer.
+- Do not silently change file format, weaken KDF, disable negative tests or introduce hardcoded credentials. Keep exact v1 envelope field allowlists and reject plaintext metadata in the storage layer. Keep v1 unlock backward-compatible when changing only new-Vault passphrase checks; do not implement recovery key wrapping without audited v2 migration design.
 - Human authorization and external security review are needed before valuable secrets or production broker operation.
 - Carnoa Governance (in ss-workspace) owns company policy, approvals and incident authority; integrate via versioned contracts, never shared credential databases.
 

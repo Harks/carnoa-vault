@@ -5,7 +5,7 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 | Attack | Current control | Residual exposure |
 |---|---|---|
 | Server operator reads credential DB | No server exists | Future sync backend must store only ciphertext |
-| Offline ciphertext theft | AES-GCM and scrypt | Weak passwords are guessable offline |
+| Offline ciphertext theft | AES-GCM, scrypt, and limited new-Vault offline passphrase screening | Known/common-password screening is incomplete; weak passwords and valid old Vaults remain guessable offline |
 | Tampering / wrong passphrase | GCM tag + AAD + strict KDF | Whole valid-vault rollback not detected |
 | World-readable file / symlink | 0600 / 0700, O_NOFOLLOW, reject symlink ancestors and unsafe file modes | Path checks still have same-UID TOCTOU races; endpoint compromise can expose memory |
 | Accidental plaintext serialization | Store read/write rejects all non-envelope JSON and extra unencrypted metadata keys | Malicious code inside trusted process can still steal data before encryption |

@@ -6,6 +6,7 @@ import { stdin, stdout, stderr } from 'node:process';
 import { encryptVault, decryptVault, putItem, removeItem } from './vault.mjs';
 import { readVaultFile, withVaultLock, writeVaultFile } from './store.mjs';
 import { exportEncryptedBackup, restoreEncryptedBackup } from './backup.mjs';
+import { validateNewMasterPassphrase } from './passphrase-policy.mjs';
 
 const vaultPath = path.join(homedir(), '.carnoa', 'vault.json');
 const usage = 'Usage: carnoa-vault <init | put NAME | list | remove NAME | backup | restore ENCRYPTED_FILE>\nSecrets cannot be supplied via argv/env/stdin pipes.\n';
@@ -52,7 +53,9 @@ async function main() {
   if (extra.length || !['init','put','list','remove','backup','restore'].includes(action) ||
       (['put','remove','restore'].includes(action) !== (typeof name === 'string'))) throw new Error(usage.trim());
   if (action === 'init') {
+    stdout.write('Choose a long, unique passphrase; there is no operator reset or recovery.\n');
     const passphrase = await hiddenPrompt('New passphrase: ');
+    validateNewMasterPassphrase(passphrase);
     const confirmation = await hiddenPrompt('Confirm passphrase: ');
     if (!safeCompare(passphrase, confirmation)) throw new Error('Passphrases did not match.');
     const data = await encryptVault({ items: [] }, passphrase);
