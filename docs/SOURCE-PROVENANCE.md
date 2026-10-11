@@ -43,6 +43,14 @@ Inspect the provenance subject digest, repository URI, source SHA, workflow iden
 
 GitHub documents verification at https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations . Public repositories on current GitHub plans can use GitHub artifact attestations. No claim of live end-to-end verification is made until the workflow actually passes on main and an independent verification drill is recorded.
 
+## Branch review control is not yet verified
+On 2026-10-11, GitHub returned an empty repository rulesets list. The
+legacy main branch-protection endpoint returned a 403 to the installed
+integration, so protection could **not** be verified. This does not prove
+that no legacy protection exists. Nonetheless no trust claim should depend
+on main requiring an independent review until an admin confirms enforcement
+and tests rejected direct pushes/CI bypasses. See Issue #21.
+
 ## Hard limits
 
 - This is a **source archive**, not a compiled or signed macOS, Windows, Linux, mobile or browser application.

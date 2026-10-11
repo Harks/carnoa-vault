@@ -11,7 +11,7 @@
 - [ ] Cross-platform hardware-backed keys and signed/reproducible native binaries. Experimental source archive provenance requires real main-run evidence.
 - [x] CodeQL and Node tests passed; SPDX 2.3 SBOM uploaded and validated on GitHub main.
 - [ ] Dependency Review capability still unsupported; secret scanning effectiveness/drill not validated.
-- [ ] Source OIDC attestation must pass on main and be independently verified; signed native binaries are not implemented.
+- [ ] Source OIDC attestation must pass on main and be independently verified; signed native binaries are not implemented.\n- [ ] Main/develop branch protection and independent approval enforcement (Issue #21) have not been verified.
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 ## Agent broker release (NOT IMPLEMENTED)
