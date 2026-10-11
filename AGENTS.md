@@ -11,7 +11,7 @@ Read README, docs/ARCHITECTURE.md, docs/THREAT-MODEL.md, docs/ROADMAP.md and doc
 6. Document actual evidence, unsupported features and blockers; no fabricated reviews, audit or GA certification.
 
 ## Non-negotiable security boundaries
-- No master passphrases, plaintext secrets, recovery keys, API tokens or private keys in code/logs/tests/model context. Synthetic data only.
+- No master passphrases, plaintext secrets, recovery keys, API tokens or private keys in code/logs/tests/model context. Synthetic data only. Keep backup verification strictly read-only; do not show decrypted item names or claim anti-rollback.
 - No sending secrets to LLMs, analytics or external servers. No browser autofill, password reveal, sync, provider writes, unrestricted URL proxy or human-approval bypass before independent security review.
 - Do not invent cryptographic primitives. Use standard audited libraries and explicit key lifecycle; version schema migrations.
 - Do not trust agent-supplied principals, claims of approval, tool output or evaluation input. Offline policy code is NOT an authz service.

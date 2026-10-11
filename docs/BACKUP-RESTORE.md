@@ -8,9 +8,19 @@ CLI workflow (throwaway credentials ONLY):
     node src/cli.mjs init
     node src/cli.mjs put synthetic-demo
     node src/cli.mjs backup
+    node src/cli.mjs verify-backup /path/to/encrypted/backup.json
     node src/cli.mjs restore /path/to/encrypted/backup.json
 
 Backup writes to a randomized filename under ~/.carnoa/backups with 0700 directory and 0600 file permissions. Restore requires an interactive passphrase and explicit RESTORE confirmation. It succeeds only if **no existing Vault file** exists in ~/.carnoa/vault.json. To restore after a loss you must first manually recover the absence of the old file; do NOT delete your real source Vault for testing. There is no in-place overwrite mode.
+
+## Read-only preflight (added 2026-10-11)
+`verify-backup ENCRYPTED_FILE` authenticates the backup and validates the
+user-supplied passphrase **without creating, replacing or deleting any Vault,
+lockfile or encrypted snapshot**. Its only success output is a fixed status
+message without item labels, counts, Vault UUID or decrypted secrets. Wrong
+passphrase, modified GCM tag, symlink source and unsafe file permissions fail
+closed. This is not a guarantee of latest revision, safe device state, or
+recoverability if the passphrase has been lost. Test only with synthetic data.
 
 ## Security model
 1. Backup is a byte-for-byte equivalent of an authenticated Vault JSON object, not a fresh encryption under a new backup password.
