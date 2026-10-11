@@ -47,6 +47,7 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - Security release blockers: docs/SECURITY-RELEASE-GATES.md
 - Mac/AI product direction and competitor gaps: docs/MAC-LOCAL-SECRETS-STRATEGY-2026-10-11.md
 - User discovery plan: docs/MAC-VALIDATION-INTERVIEWS.md
+- macOS 26.6.2 arm64 synthetic test evidence: docs/MAC-SYNTHETIC-QA-2026-10-11.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md
 
 Carnoa brand/trademark clearance remains pending. License: Apache-2.0.
