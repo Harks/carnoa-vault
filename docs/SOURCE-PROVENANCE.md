@@ -14,7 +14,7 @@ Allow users to verify (a) exactly which reviewed GitHub repository and commit pr
     cd dist
     sha256sum --check *.sha256
 
-The package explicitly allowlists source modules, license, security policy and critical threat-model/recovery documents. It excludes tests, workflow configuration, developer scripts, local Vault files, machine-generated backups and environment secrets.
+The package explicitly allowlists **Node.js Vault source modules**, license, security policy and critical threat-model/recovery documents. It excludes tests, workflow configuration, developer scripts, local Vault files, machine-generated backups and environment secrets. **The `mac-companion/` SwiftUI sources and any Mac executable are NOT included in this npm source archive**. A signed source-attestation verification for the Node package must never be described as independently signing, attesting, notarizing or auditing the Mac app. Future native distribution requires a separate scope-bound artifact, macOS signing/notarization and consumer verification workflow.
 
 The source build script uses two separate npm pack --ignore-scripts executions and requires their byte-for-byte equality and matching SHA-256 digest. It fails if an archive with the same name is already present in the output directory. Repeatability is currently verified within one Linux/toolchain setup; different Node/npm/OS distributions are **not** asserted to produce identical bytes. The GitHub workflow pins Node.js 24.15.0 and records npm --version. Changes to tooling require a new reproducibility assessment.
 

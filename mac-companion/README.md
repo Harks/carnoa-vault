@@ -15,11 +15,18 @@ The executable creates a menu bar item. Choose **Open demo dashboard**, then sel
 
 The demo hardcodes three *fictional secret-variable names* and shows only required/matched/missing totals. This is an independent Swift implementation of the synthetic-template audit, not a native wrapper around the real Vault.
 
+## AI approval UX simulation — no authority
+
+Choose **Preview fictional AI approval (no access)** from the menu. The separate native window displays one fixed fake request for github.pulls.list against github:repo/ExampleOrg/demo-repo. Review the purported agent identity (explicitly **UNVERIFIED**), read-only operation, exact fictional resource and two-minute expiration. Use **Review**, **Simulate confirmation**, **Simulate denial**, or **Reset** to exercise the interface.
+
+The strictly allowlisted simulation refuses altered resources, write operations, unreviewed confirmation, expired/future requests and repeated terminal decisions. Its in-memory state machine always reports executable=false, including after a simulated confirmation. No grant, key, OAuth token, OS authentication, GitHub API call, network socket or audit log is created. These tests do NOT replace OS process identity attestation, revocation, user consent or a reviewed policy-enforcement broker.
+
+
 ## Strict data boundary
 
 - Read only an explicitly user-selected file literally named .env.example. Never open .env, passwords, private SSH keys or environment-value files.
 - Reject any nonempty KEY=value, invalid UTF-8, duplicate name, malformed key, oversized input (64 KiB), and selected file symlink; no automatic directory traversal.
-- Store no secrets, use no network APIs, make no Keychain/LocalAuthentication calls, perform no AI-tool execution or grant issuance, and send no telemetry.
+- Store no secrets, use no network APIs, make no Keychain/LocalAuthentication calls, perform no AI-tool execution or grant issuance, and send no telemetry. The simulated AI review/confirm/deny state machine never produces an executable capability.
 - Only counts are shown. Unexpected template bytes are read locally only long enough to reject them. If a selected file lives in iCloud or another file-provider location, macOS may fetch it through its own file-provider stack; choose local synthetic files for strictly offline trials.
 - Parent-directory races/symlink ancestry are **not independently secured** in this native prototype. It is NOT a general file-scanning security boundary.
 
