@@ -7,7 +7,8 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 | Server operator reads credential DB | No server exists | Future sync backend must store only ciphertext |
 | Offline ciphertext theft | AES-GCM and scrypt | Weak passwords are guessable offline |
 | Tampering / wrong passphrase | GCM tag + AAD + strict KDF | Whole valid-vault rollback not detected |
-| World-readable file / symlink | 0600 / 0700, O_NOFOLLOW, validation | Compromised same-UID process can access memory |
+| World-readable file / symlink | 0600 / 0700, O_NOFOLLOW, reject symlink ancestors and unsafe file modes | Path checks still have same-UID TOCTOU races; endpoint compromise can expose memory |
+| Accidental plaintext serialization | Store read/write rejects all non-envelope JSON and extra unencrypted metadata keys | Malicious code inside trusted process can still steal data before encryption |
 | Concurrent local writes | Exclusive lock + rename | Stale lock requires inspection |
 | AI prompt injection | No agent integration or secret reveal CLI | Future broker must enforce actions outside AI |
 | Malicious release / keylogger | Source inspectable | Not mitigated; no reproducible signed releases |
