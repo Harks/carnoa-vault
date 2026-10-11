@@ -4,12 +4,29 @@
   "type": "module",
   "private": true,
   "description": "Experimental local-first encrypted vault and fail-closed agent policy prototype",
-  "engines": {"node": ">=22"},
-  "bin": {"carnoa-vault": "./src/cli.mjs"},
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "carnoa-vault": "./src/cli.mjs"
+  },
   "scripts": {
     "check": "node --check src/vault.mjs && node --check src/store.mjs && node --check src/backup.mjs && node --check src/passphrase-policy.mjs && node --check src/policy.mjs && node --check src/cli.mjs",
     "test": "node --test --test-concurrency=1",
-    "verify": "npm run check && npm test"
+    "verify": "npm run check && npm test",
+    "release:source": "node scripts/build-source-release.mjs dist"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "files": [
+    "src/",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE",
+    "docs/ARCHITECTURE.md",
+    "docs/BACKUP-RESTORE.md",
+    "docs/PASSPHRASE-RECOVERY-ADR.md",
+    "docs/SECURITY-RELEASE-GATES.md",
+    "docs/THREAT-MODEL.md",
+    "docs/SOURCE-PROVENANCE.md"
+  ]
 }
