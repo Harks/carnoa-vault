@@ -15,7 +15,7 @@ Assets: master passphrase, derived key, decrypted secrets, local ciphertext, fut
 | Master passphrase loss | No vendor backdoor; encrypted snapshot and read-only verification | Original passphrase is still required; no recovery/key escrow |
 | Snapshot rollback | Restore requires local passphrase and refuses overwrite | Legitimate older ciphertext remains authentic; anti-rollback not available |
 
-Metadata-only example template threat: refuse actual .env files and nonempty values, duplicates, symlink paths, oversized templates and malicious input; return only aggregate counts. This is not proof that any key is valid, fresh, scoped or safe for AI use. Same-UID process/path races and already-compromised hosts remain unmitigated.
+Local example-template audit threat: refuse actual .env files and nonempty values, duplicates, symlink paths, oversized templates and malicious input; return only aggregate counts. **Current v1 still decrypts the whole Vault, including secret values, into process memory in order to read item names.** Values are not logged, emitted or transmitted by the audit; but process inspection, malware and crash dumps remain a risk. v2 should authenticate/decrypt only the necessary metadata without loading secret values (Issue #27, requires independent crypto review). This is not proof any key is valid, fresh, scoped or safe for AI. Same-UID path races and compromised hosts remain unmitigated.
 
 Mandatory invariants: never print/transmit secret values; fail closed; no credential-exposing generic API; no high-impact operations without independent consent. All testing uses synthetic credentials.
 
