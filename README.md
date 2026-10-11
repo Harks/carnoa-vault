@@ -13,7 +13,7 @@ Make trust technically verifiable rather than dependent on a solo developer: no 
 - Local 0700 directory / 0600 file, symlink and symlink-ancestor rejection, **encrypted-envelope-only** file persistence (strict schema), atomic write with create-if-absent protection, single-writer lock and bounded input sizes.
 - Encrypted local backup and authenticated restore (only into an absent Vault); no plaintext export or automatic cloud sync.
 - Hidden interactive TTY prompts: init, put NAME, list, remove NAME. New Vault creation screens obvious/repeating passphrases and requires 15+ Unicode code points; legacy v1 unlock is unchanged. No secret reveal command, no argv/env/stdin-pipe secrets, no telemetry.
-- Local **.env.example-only audit** compares project-required variable names with decrypted Vault item names, printing aggregate counts only; no real .env parsing, plaintext export, environment injection or AI tool access.
+- Local **.env.example-only audit** compares project-required variable names with decrypted Vault item names, printing aggregate counts only; no real .env parsing, plaintext export, environment injection or AI tool access. **v1 decrypts the entire local Vault (including secret values) into process memory** to inspect those names; it does not print or transmit them. Use synthetic data only; v2 metadata separation requires independent review.
 - Pure offline **reference-only** agent read-policy evaluator, not a real authenticated access broker.
 - Node.js 22+, no runtime dependencies, security-negative tests. CI generates SPDX 2.3 inventory, and a *main-only source archive attestation* workflow provides digest-bound provenance when GitHub supports it. Neither is a signed/reviewed native binary or cryptographic audit.
 
