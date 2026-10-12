@@ -16,7 +16,8 @@
 - [x] CodeQL and Node tests passed; SPDX 2.3 SBOM uploaded and validated on GitHub main.
 - [ ] Dependency Review capability still unsupported; secret scanning effectiveness/drill not validated.
 - [ ] Node source OIDC attestation passed on main and in-workflow gh verify succeeded; independent external verification exercise and signed/notarized native binaries remain missing.
-- [ ] Main/develop branch protection and independent approval enforcement (Issue #21) have not been verified.
+- [x] Enforced rulesets on main (24902302) and develop (24902342) verified: PR only, required Node22/24 + CodeQL + SBOM, no force push/deletion, no bypass actors.
+- [ ] Independent human reviewers and approval count >=1, CODEOWNERS, real sandbox negative enforcement checks still missing. Current review minimum is **zero** (Issue #21).
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 - [x] Non-executable, synthetic-only Ed25519 grant contract verifier and denial tests exist; this does NOT satisfy any broker runtime gate.
