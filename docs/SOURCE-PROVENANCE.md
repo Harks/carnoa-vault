@@ -43,13 +43,8 @@ Inspect the provenance subject digest, repository URI, source SHA, workflow iden
 
 GitHub documents verification at https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations . Public repositories on current GitHub plans can use GitHub artifact attestations. No claim of live end-to-end verification is made until the workflow actually passes on main and an independent verification drill is recorded.
 
-## Branch review control is not yet verified
-On 2026-10-11, GitHub returned an empty repository rulesets list. The
-legacy main branch-protection endpoint returned a 403 to the installed
-integration, so protection could **not** be verified. This does not prove
-that no legacy protection exists. Nonetheless no trust claim should depend
-on main requiring an independent review until an admin confirms enforcement
-and tests rejected direct pushes/CI bypasses. See Issue #21.
+## Protected branches are active, but human reviews are not enforced
+On 2026-10-12 repository admin activated and read back GitHub rulesets **24902302 (main)** and **24902342 (develop)**. Each enforces PR-only merges, up-to-date GitHub Actions Node22/24/codeql/sbom checks, no force push, no deletion, conversations resolved and no bypass actors. **The required approving review count is zero**; these protections do not establish independent security review or a trusted/peer-reviewed signer. Sandbox denial tests and an actual qualified second reviewer are still needed. The Node source OIDC attestation does not sign the native Mac app. See docs/BRANCH-PROTECTION-OPERATOR-PLAYBOOK-2026-10-12.md and Issue #21.
 
 ## Hard limits
 

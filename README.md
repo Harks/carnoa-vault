@@ -53,6 +53,6 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - Mac developer-only bundle packaging evidence and limitations: docs/MAC-ADHOC-PACKAGING-QA-2026-10-12.md
 - Cross-language strict .env.example parser contract and 16 synthetic cases: docs/ENV-PARSER-PARITY-CONTRACT-2026-10-12.md
 - Swift Package macOS 26.6.2 QA: docs/MAC-COMPANION-QA-2026-10-12.md
-- AI development plan: AGENTS.md and docs/ROADMAP.md
+- AI development plan and protected-branch release/sync workflow: AGENTS.md, docs/ROADMAP.md and docs/BRANCH-PROTECTION-OPERATOR-PLAYBOOK-2026-10-12.md
 
 Carnoa brand/trademark clearance remains pending. License: Apache-2.0.
