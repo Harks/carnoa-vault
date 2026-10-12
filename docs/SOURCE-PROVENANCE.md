@@ -53,7 +53,7 @@ and tests rejected direct pushes/CI bypasses. See Issue #21.
 
 ## Hard limits
 
-- This is a **source archive**, not a compiled or signed macOS, Windows, Linux, mobile or browser application.
+- This is a **Node npm source archive**, not a compiled or signed macOS, Windows, Linux, mobile or browser application. The mac-companion/ SwiftUI code and any native Mac .app are NOT covered by this Node source attestation. The native Mac packaging script uses only local **ad-hoc integrity** signatures and is not a trusted/notarized distribution pipeline.
 - Reproducing the package with the same npm toolchain does not prove that the underlying source is free of backdoors or contains secure cryptography.
 - An attestation establishes who built an artifact under which GitHub workflow; it does not prove application behavior, branch protection, safe secret handling or security-review signoff.
 - No end-user-secret beta, cloud Vault, decryption key escrow, auto-install, OTA updates or release promotion is authorized by a successful workflow.
