@@ -1,46 +1,53 @@
-# GitHub branch protection and review playbook (2026-10-12)
+# Carnoa Vault protected branches — enforced baseline and human-review gap
 
-Status: **operator action required**; documenting this does **not** enforce GitHub settings.
-Tracking: [Issue #21](https://github.com/Harks/carnoa-vault/issues/21).
+Updated: 2026-10-12 JST
+Issue: https://github.com/Harks/carnoa-vault/issues/21
 
-## Observed evidence (authenticated repository admin)
+## Actual repository ruleset state
 
-On 2026-10-12 JST, an authenticated GitHub CLI on the authorized Mac returned:
-- GET /repos/Harks/carnoa-vault/branches/main/protection → HTTP 404, "Branch not protected"
-- GET /repos/Harks/carnoa-vault/branches/develop/protection → HTTP 404, "Branch not protected"
-- GET /repos/Harks/carnoa-vault/rulesets → []
+On 2026-10-12 an authorized repository admin created two active GitHub rulesets and verified their effective rules:
 
-Hence neither branch currently enforces protection via a legacy branch-protection rule or ruleset. GitHub Actions OIDC artifact attestations can still verify build provenance, but **they cannot prove source review or prevent a malicious direct push**.
+| Target ref | Ruleset | Enforcement |
+|---|---|---|
+| main | https://github.com/Harks/carnoa-vault/rules/24902302 | active |
+| develop | https://github.com/Harks/carnoa-vault/rules/24902342 | active |
 
-The GitHub App connector may not have admin access to these endpoints, but the authenticated admin GitHub CLI did. Re-check settings under the current authorized account.
+Each branch now:
+- Requires a pull request and all review conversations resolved.
+- Rejects force pushes and deletion.
+- Requires four GitHub Actions checks from app 15368: node-verify (22), node-verify (24), codeql, sbom.
+- Requires an up-to-date branch for passing status checks.
+- Has no bypass actors configured.
+- **Requires ZERO approving human reviews.** Human review and independent source assurance are still MISSING.
 
-## Recommended admin changes (requires explicit owner decision)
+GitHub's older branches/BRANCH/protection API can still return 404 when a separate Rulesets mechanism is the source of protection. Use the active rulesets and effective repos/Harks/carnoa-vault/rules/branches/BRANCH API to verify enforcement.
 
-Configure in GitHub repository **Settings → Rules → Rulesets** (or supported Branches protection) after securing an **independent qualified reviewer** with Write access.
+## New required development flow
 
-1. Apply one enforceable rule to main and one to develop: require pull requests, block force pushes and deletions, require conversation resolution, and constrain bypass/administrator exceptions. For auth/crypto/signing/CI files, require review by an independent maintainer (not the commit author).
-2. Main is a release branch. Promotion via reviewed develop→main PR only, *after* separate feature→develop PR checks. No direct main pushes, unreviewed merge paths, release signing workflow edits or unsigned binary attachments.
-3. Develop is also protected. Feature PRs require review, up-to-date checks and security-negative tests. Do not allow a maintainer or AI to bypass rules to keep automation flowing.
-4. Add CODEOWNERS for .github/workflows/**, scripts/build-source-release.mjs, src/vault.mjs, src/store.mjs, src/agent-grant-contract.mjs and mac-companion/Sources/**. **Do not invent GitHub usernames.** Add only actual independent reviewers who accepted access and ownership.
-5. Required PR checks that are currently broad and relevant: Node CI node-verify (22), node-verify (24), codeql, and SBOM sbom. Confirm exact native GitHub check contexts/Apps before saving rules. A check name alone is insufficient if an attacker can spoof its status.
-6. **Important conditional workflow limitation:** macOS synthetic CI currently only runs when mac-companion/** or its workflow file changes. Do NOT require "swift-synthetic" for every PR until a lightweight always-present trusted status check or a path-aware required aggregate workflow is built, otherwise docs-only PRs will be permanently blocked. For Mac changes, manually require/inspect that job until then.
-7. Source provenance is generated **on main push**, not on incoming PRs; it should be audited after promotion, but cannot be marked as an always-present pre-merge status check without restructuring CI.
-8. Dependency Review is **unsupported/skipped** at this repository today. Do NOT claim it passed, and do not require the missing status until GitHub Dependency Graph/security settings are fixed and checked.
-9. Check Secret Scanning, Push Protection and Dependabot enabled status. An enabled toggle is not evidence of a tested leak response runbook.
-10. Record the ruleset IDs, required check contexts, approval count, effective bypass groups and date in a security ADR. Keep a separate incident/revocation contact, because a signed malicious build is still malicious.
+1. Start from latest develop and inspect open PRs, checks, and concurrent edits.
+2. Implement a small feature on its own topic branch and open a feature -> develop PR.
+3. Require Node22/24, codeql and sbom PR checks. For Mac code changes also examine the conditional macOS swift-synthetic CI; it is NOT an always-present required status.
+4. **Independent human review is still required by product security policy** for crypto, authz, signing and native-secret work, even though GitHub does not yet enforce approvals. If a host safety gate blocks the merge, leave the PR open; no alternate client, bypass identity, force push or direct update is permitted.
+5. After approved develop merge, promote via a separate develop -> main PR, after required CI.
+6. Both branches are PR protected: a main merge adds a new commit, so synchronize through a NEW main -> develop PR (and its CI), not a direct update-ref fast-forward.
+7. Verify both heads align after the sync PR and check the post-merge main CI/source attestation.
 
-## Verification checklist (admin-only)
+The signing workflow is MAIN-PUSH-ONLY, not a pre-merge status. Dependency Review remains unsupported/skipped; the Dependency Graph SBOM API returned 404 on 2026-10-12. Do not enable a required check that never runs.
 
-After configuring rules, read back the policy from GitHub API using an account authorized to view it and verify the rule applies to both refs. The API must no longer report "Branch not protected".
+## Human sign-off still needed
 
-Perform **non-destructive** controlled tests using a throwaway branch and test PR in a sandbox/fork: missing-review denial, failing-check denial, blocked force push and blocked unauthorized bypass. Do not experiment with destructive force pushes directly against main/develop or compromise real release assets. Capture links/screenshots of status checks and rejected attempts, without secrets.
+A solo maintainer cannot independently approve their own changes. Recruit a qualified independent reviewer with appropriate Write access; do not invent reviewer accounts or code owners. After they accept, increase the rulesets' required approval count from 0 to at least 1 and consider CODEOWNERS for security-critical paths, crypto, agent-broker modules, mac-companion source and workflows.
 
-### Approval vs autonomous work
+This change will intentionally prevent unattended AI merges until a real reviewer approves. Never weaken those controls to satisfy an automated completion target.
 
-An independent human approval requirement intentionally means AI agents **cannot** automatically merge security-sensitive PRs by themselves. Agents may prepare PRs, resolve merge conflicts, run tests and request review, but cannot satisfy the independence requirement or bypass host safety checks through alternate tools/tokens. If the host blocks a merge, leave it open and report the blocker. This preserves the user's goal of a trustworthy solo-maintained OSS project, while making limitations transparent.
+## Evidence required before closing Issue #21
 
-## Current release blocker impact
+- Confirm active rule IDs and exact required CI context/integration bindings.
+- Safely test rejected direct push, missing-check PR, non-fast-forward/deletion attempts and bypass in a throwaway fork or sandbox. Do not attempt destructive tests against real main/develop.
+- Verify review count >=1, independent reviewer identity and denial of self-review.
+- Verify a fresh main -> develop sync PR works with the enforced checks.
+- Review signed source provenance, supply-chain incident response and vulnerability triage. Main's PR checks and GitHub OIDC source attestation alone do not validate cryptography or native Mac binaries.
 
-- No production credential beta, actual agent permissions, Keychain-based storage, signed native Mac releases or security certification on the strength of CI alone.
-- The Node npm source attestation does not cover the mac-companion/ directory or any native .app. Native binary signing/notarization/provenance is separate future work.
-- Source code and unit tests may still be published as clearly labeled synthetic experimental previews; production release gate remains blocked until independent crypto/security review and verified branch enforcement.
+## Product readiness decision
+
+Both branches are now meaningfully protected against unreviewed DIRECT pushes and missing CI, but are not independently peer reviewed. This is NOT sufficient to handle valuable passwords, issue real AI capabilities, claim completed cryptographic audit, or distribute trusted/native notarized Mac builds.
