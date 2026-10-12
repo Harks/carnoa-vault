@@ -4,6 +4,7 @@
 - [x] Local encrypted vault + strict metadata validation.
 - [x] Hidden interactive TTY input, no secret-reveal CLI.
 - [x] Experimental local .env.example-only metadata audit returns count-only coverage and rejects nonempty values; this does not authorize secret use.
+- [x] One shared 16-case synthetic Node/Swift parser contract validates BOM, CRLF, input form and negative cases locally; cross-language tests are not a formal security assurance.
 - [x] Synthetic-only SwiftUI Mac companion source compiles on Apple Silicon/macOS 26.6.2 with 6 native unit tests; it reads no real credentials or Keychain items.
 - [ ] Signed/notarized native app, Mac sandbox/entitlements, full accessibility/browser UI QA, Keychain/Touch ID implementation and independent review are pending.
 - [x] File permission/symlink tests, strict envelope-only storage and ancestry tests, wrong passphrase/tag tests and default-deny policy tests.
@@ -18,6 +19,8 @@
 - [ ] Independent penetration test, issue-response process and security policy exercise.
 
 - [x] Non-executable, synthetic-only Ed25519 grant contract verifier and denial tests exist; this does NOT satisfy any broker runtime gate.
+
+- [x] Synthetic offline GitHub pull-list request reference with strict fixed host, GET, bounded path/pagination, hash binding and always executable:false; no network/provider integration.
 
 ## Agent broker release (NOT IMPLEMENTED)
 - [ ] Verified agent principal, binding to workload and user.

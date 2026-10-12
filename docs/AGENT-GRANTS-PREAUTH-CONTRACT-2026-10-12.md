@@ -36,7 +36,7 @@ The reference verifier CANNOT ascertain that its caller-provided expected subjec
 
 1. Threat-model real Swift/macOS XPC peer audit tokens, code signatures, PID reuse, local sockets and sandboxing before choosing an identity bridge.
 2. Design signed grants bound to authenticated user+workload+operation+request fingerprint with durable revoke/replay state, not just a Set.
-3. Add a purely synthetic and non-executable provider adapter contract test for Github pull-request list: strict approved GET, exact repository scope and no redirects, SSRF or credential disclosure.
+3. The **non-executable synthetic** GitHub pull-list request-binding contract is now implemented and tested in src/github-pull-list-reference.mjs (docs/GITHUB-READONLY-REQUEST-REFERENCE-2026-10-12.md). NEXT: after independently verified macOS workload identity, safe user consent, key distribution and durable revocation are designed, test a typed real adapter separately. The offline reference does not execute a GET, authenticate GitHub or prevent SSRF in an as-yet-unwritten network stack.
 4. Integrate with Carnoa Governance only by signed policy/approval evidence IDs and explicit tenant authorization. ModelGate/Agent Workbench must never receive secret values.
 5. Obtain an independent review of contract, crypto trust anchors, process identity, human-approval UX and provider mediation before any real API credential is attached.
 
