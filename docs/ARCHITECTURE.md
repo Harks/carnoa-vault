@@ -21,6 +21,9 @@ The strict .env.example parser is independently implemented in Node and Swift bu
 ## Offline signed grant contract reference (2026-10-12)
 src/agent-grant-contract.mjs verifies only a strict Ed25519 signed reference grant with exact synthetic subject/audience/github repository/read-only operation/request digest/nonce/time bounds. It uses an ephemeral single-process nonce Set and returns executable=false **even on a valid signature**. No signing private key, network API, provider token, process identity, Keychain or Apple Passwords integration is exposed. Caller-supplied expected principal/public key can be forged if agent-controlled; this is intentionally NOT the production trust boundary. See docs/AGENT-GRANTS-PREAUTH-CONTRACT-2026-10-12.md and Issue #6.
 
+## Non-executable provider request reference (2026-10-12)
+src/github-pull-list-reference.mjs specifies a fixed api.github.com GET pull-list operation, exact synthetic repository resource and bounded pagination. It creates a deterministic request fingerprint and an always non-executable frozen descriptor with no credentials, network or arbitrary URL support. A matching offline signed grant reference is **not permission to execute**. See docs/GITHUB-READONLY-REQUEST-REFERENCE-2026-10-12.md. Production provider transports, identity and human consent do not exist.
+
 ## Offline policy reference
 evaluateAgentRead is a pure evaluation helper. Inputs are forgeable by an AI or another caller. It MUST NOT be exposed as a security enforcement API. The real broker must independently verify signed workload identity, grants, audience, path/method/body, revocation, replay protection, host allowlists, no redirects/SSRF, consent and audit.
 
