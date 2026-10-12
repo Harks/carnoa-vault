@@ -28,3 +28,17 @@ jobs:
         run: swift test --package-path mac-companion
       - name: Compile native menu bar executable (never launch)
         run: swift build --configuration release --package-path mac-companion
+      - name: Package and verify an ad-hoc signed *synthetic-only* .app (never distribute)
+        shell: bash
+        run: |
+          OUTPUT="$(mktemp -d)"
+          trap 'rm -rf "$OUTPUT"' EXIT
+          bash mac-companion/Scripts/build-synthetic-demo-app.sh "$OUTPUT"
+          bash mac-companion/Scripts/verify-synthetic-demo-app.sh "$OUTPUT/Carnoa Synthetic Demo.app"
+          # Existing destination MUST NOT be overwritten by a second build.
+          if bash mac-companion/Scripts/build-synthetic-demo-app.sh "$OUTPUT"; then
+            echo "ERROR: packaging unexpectedly overwrote an existing artifact"
+            exit 1
+          fi
+          # Never upload this unsigned/not-notarized bundle as a release artifact.
+

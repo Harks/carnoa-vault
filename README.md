@@ -49,7 +49,8 @@ A hostile device, malicious update, process debugger, memory dump, keylogger or 
 - User discovery plan: docs/MAC-VALIDATION-INTERVIEWS.md
 - Apple Passwords user-mediated credential exchange feasibility (research only; import DEFERRED): docs/APPLE-PASSWORDS-CREDENTIAL-EXCHANGE-RESEARCH-2026-10-12.md
 - macOS 26.6.2 arm64 synthetic test evidence: docs/MAC-SYNTHETIC-QA-2026-10-11.md
-- Native SwiftUI synthetic menu bar demo: mac-companion/README.md
+- Native SwiftUI synthetic menu bar demo and developer-only ad-hoc .app packaging (NOT notarized or trusted): mac-companion/README.md
+- Mac developer-only bundle packaging evidence and limitations: docs/MAC-ADHOC-PACKAGING-QA-2026-10-12.md
 - Cross-language strict .env.example parser contract and 16 synthetic cases: docs/ENV-PARSER-PARITY-CONTRACT-2026-10-12.md
 - Swift Package macOS 26.6.2 QA: docs/MAC-COMPANION-QA-2026-10-12.md
 - AI development plan: AGENTS.md and docs/ROADMAP.md

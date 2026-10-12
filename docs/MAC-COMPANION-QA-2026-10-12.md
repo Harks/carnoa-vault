@@ -6,14 +6,14 @@ Status: experimental source-only UI, no real secrets.
 - Verified on SS-MBP-2021.local (Apple Silicon arm64) on macOS 26.6.2.
 - Xcode 27.0, Swift 6.4, macOS SDK 27.0.
 - Swift Package platform minimum: macOS 14.
-- On-device command: swift test (package root): **6 XCTest cases passed / 0 failed**.
+- On-device main-source swift test (package root): **7 XCTest cases passed / 0 failed** (six existing template tests + one shared Node/Swift 16-case parser fixture contract). PR #34 separately adds 8 approval UI tests but remains outside main.
 - On-device command: swift build --configuration release: **build succeeded**.
 - No Keychain, LocalAuthentication/Touch ID, Apple Passwords, API calls, real Vault or live Agent Broker were involved.
 
 ## What was tested
 - Only explicitly selected .env.example names; deny .env, nonempty values, shell syntax, duplicate keys, bad UTF-8, more than 64 KiB or more than 256 keys.
 - Synthetic coverage computed in memory using a fixed set of *fictional key names* and displayed only required/matched/missing totals.
-- The SwiftUI MenuBarExtra and dashboard compile in both debug tests and release build; no claim of signed/notarized .app packaging.
+- The SwiftUI MenuBarExtra and dashboard compile in both debug tests and release build. On 2026-10-12 the developer-only packaging script also assembled an arm64 .app with a valid **ad-hoc codesign signature** (Signature=adhoc, TeamIdentifier=not set), validated Info.plist, and tested no-overwrite behavior. This is NOT a trusted Developer ID signature, notarization or secure production distribution.
 - The file picker is user-directed; its contents are never exported to external services or AI tools.
 - NOTE: user-selected files in iCloud/file-provider storage could trigger macOS-owned background retrieval; strictly offline trials must choose locally stored synthetic files. OS file-provider data handling is outside the application's assurance.
 

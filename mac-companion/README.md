@@ -15,6 +15,17 @@ The executable creates a menu bar item. Choose **Open demo dashboard**, then sel
 
 The demo hardcodes three *fictional secret-variable names* and shows only required/matched/missing totals. This is an independent Swift implementation of the synthetic-template audit, not a native wrapper around the real Vault.
 
+## Package an EXPERIMENTAL local synthetic .app (not for distribution)
+
+This Mac-only script assembles a menu-bar .app bundle using an Info.plist, the release-mode Swift executable and an **ad-hoc integrity signature**. It does not access any Apple Developer ID, signing secret, notarization service or production credential.
+
+    cd mac-companion
+    bash Scripts/build-synthetic-demo-app.sh "$(mktemp -d)"
+    # The script prints the output path. To verify a particular output:
+    bash Scripts/verify-synthetic-demo-app.sh "/path/to/Carnoa Synthetic Demo.app"
+
+The built bundle is for local developer review of a fictional key-name dashboard. LSUIElement suppresses a normal Dock icon in favor of the MenuBarExtra. Do not distribute it as a trusted password manager or suggest Gatekeeper/notarization approval. A successful ad-hoc codesign only checks local integrity, not publisher identity. The GitHub macOS CI packages and verifies a throwaway app, but **never uploads it for end users**. Full Developer ID signing, sandbox/entitlements, notarization, provenance, consent UX and security review remain pending.
+
 ## Strict data boundary
 
 - Read only an explicitly user-selected file literally named .env.example. Never open .env, passwords, private SSH keys or environment-value files.
@@ -25,7 +36,7 @@ The demo hardcodes three *fictional secret-variable names* and shows only requir
 
 ## Release and security status
 
-- This is a Swift Package executable built from source, **not** a signed/notarized .app, a Keychain integration, Touch ID approval, password manager, verified agent broker, or externally audited application.
+- The developer script can create a locally **ad-hoc-signed** .app bundle, but this is NOT a Developer ID signed/notarized, Gatekeeper-approved, reviewed or production application, nor a Keychain integration, Touch ID approval, password manager or verified agent broker.
 - The original Node.js v1 Vault decrypts its entire data blob into local process memory even for name comparisons. The Swift demo intentionally does **not** open that Vault; it uses a fixed synthetic set.
 - A future native client must use independently reviewed cryptography, verify workload identity separately from biometric user presence, and avoid importing Apple Passwords outside supported explicitly approved credential exchange.
 
