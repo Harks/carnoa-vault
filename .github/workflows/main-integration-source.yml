@@ -1,0 +1,37 @@
+name: Main integration source
+# No checkout, secrets, dependency install or deployment. Input is parsed as JSON only.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+concurrency:
+  group: main-source-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  check-source-branch:
+    name: main-integration-contract
+    runs-on: [self-hosted, harks-local-ci]
+    timeout-minutes: 5
+    steps:
+      - name: Verify scoped task PR to main
+        shell: bash
+        run: |
+          node <<'NODE'
+          function validateMainPR(event) {
+            const pr = event?.pull_request;
+            if (!pr || pr.base?.ref !== 'main') return 'Expected a pull request targeting main';
+            const repo = event.repository?.full_name;
+            if (!repo || pr.base?.repo?.full_name !== repo || pr.head?.repo?.full_name !== repo) return 'Same-repository PR required';
+            const head = pr.head?.ref;
+            if (typeof head !== 'string' || !head || /^(main|master|production|develop|staging)$/.test(head) || /^(release-pin|release-stage)\//.test(head)) return 'Use a scoped task branch; legacy develop is drain-only';
+            if (!/^[a-f0-9]{40}$/.test(pr.head?.sha ?? '')) return 'Exact candidate SHA missing';
+            return null;
+          }
+          const fs = require('node:fs');
+          const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+          const error = validateMainPR(event);
+          if (error) { console.error(error); process.exitCode = 1; }
+          else console.log('Main integration source valid. This is NOT product QA or production approval.');
+          NODE

@@ -1,3 +1,8 @@
+<!-- BEGIN main-staging-contract-v1 -->
+## Branch routing — owner decision 2026-11-05
+Read `docs/branch-environment-policy.md`. New task branches start from latest `main` and target `main` by reviewed PR. `main` is integration/Staging, never production authorization. `develop` is drain-only history, not the target for new work. This replaces older develop-only routing in this repository, while preserving all product tests, release evidence, human production approvals and data/security boundaries. Hosting/Staging activation remains separately verified; this document alone does not enable it.
+<!-- END main-staging-contract-v1 -->
+
 # AI autonomous development instructions (security-critical)
 
 Read README, docs/ARCHITECTURE.md, docs/THREAT-MODEL.md, docs/ROADMAP.md, docs/MAC-LOCAL-SECRETS-STRATEGY-2026-10-11.md and docs/SECURITY-RELEASE-GATES.md before each substantive change. The project is PRE-AUDIT and must not claim production readiness.
