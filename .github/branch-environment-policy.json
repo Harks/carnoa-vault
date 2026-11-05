@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "policyId": "main-staging-production/v1",
+  "ownerDecisionDate": "2026-11-05",
+  "taskBase": "main",
+  "taskPrTarget": "main",
+  "integrationBranch": "main",
+  "stagingSourceBranch": "main",
+  "productionBranch": "production",
+  "legacyDevelop": "drain-only",
+  "mainMergeAuthorizesProduction": false,
+  "productionRequiresExplicitOwnerApproval": true,
+  "stagingAutoDeploy": "blocked-until-isolation-verified",
+  "sourceCheckContext": "main-integration-contract"
+}
